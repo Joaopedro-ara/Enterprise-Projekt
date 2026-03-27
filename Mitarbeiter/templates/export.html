@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>exscel Export</title>
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #eef1f5;
+        }
+        .header {
+            background: #1f2d3d;
+            color: white;
+            padding: 20px 40px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .main{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 85vh;
+        }
+        .card{
+            background:white;
+            padding:40px;
+            width:420px;
+            border-radius:10px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.08);
+        }
+        .card h1{
+           font-size:22px;
+            margin-bottom:10px;
+            color:#1f2d3d;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+        }
+        label{
+            font-weight: 600;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            color: #333333;
+        }
+        input,select{
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid#ccc;
+            font-size: 14px;
+        }
+        input:focus,select:focus{
+            outline:none;
+            border-color: #2563eb;
+        }
+        button{
+            margin-top:20px;
+            padding:12px;
+            border:none;
+            border-radius:6px;
+            background:#2563eb;
+            color:white;
+            font-weight:600;
+            font-size:15px;
+            cursor:pointer;
+        }
+        button:hover{
+           background:#1e4fd1;
+        }
+
+        .footer{
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+            margin-top: 15px;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+<div class="header">
+    Hilde AG-ERP System
+</div>
+<div class="main">
+    <div class="Dropdown">
+        <h1>Lagerdaten ins excel Files downloading</h1>
+        <form action="{{ url_for('excel_export') }}" method="POST">
+            <label>Was möchstest du Exportieren? </label>
+            <select name="Export-Art">
+                <option value="alle">Alle Daten</option>
+                <option value="Kategorie">Nach Kategorie</option>
+                <option value="Lagerort">Nach Lagerort</option>
+            </select>
+            <label>Filter nach(Kategorie oder Lagerort)</label>
+            <input type="text" name="filter_wert" placeholder="z.B. Rohstoff">
+            <button type="submit">Excel-Datei generieren & herunterladen</button>
+            <a href="/lager">Abrechen/zurück zum lager</a>
+        </form>
+        <div class="footer">
+            ERP excel-Export. Hilde AG
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

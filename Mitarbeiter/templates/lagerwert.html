@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lagerwert</title>
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #eef1f5;
+        }
+        .header {
+            background: #1f2d3d;
+            color: white;
+            padding: 20px 40px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .main{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 85vh;
+        }
+        .card{
+            background:white;
+            padding:40px;
+            width:420px;
+            border-radius:10px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.08);
+        }
+        .card h1{
+           font-size:22px;
+            margin-bottom:10px;
+            color:#1f2d3d;
+        }
+        .wert {
+    font-size: 32px;
+    font-weight: bold;
+    color: #2e7d32;
+    margin-top: 10px;
+        }
+        .content {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e6ed;
+}
+
+.content h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #1f2d3d;
+}
+
+/* Tabelle schöner machen */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background: #fafbfc;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Tabellenkopf */
+thead tr {
+    background: #1f2d3d;
+    color: white;
+    text-align: left;
+}
+
+th, td {
+    padding: 12px 10px;
+}
+
+/* Linien */
+tbody tr {
+    border-bottom: 1px solid #e6e9ef;
+}
+
+/* Hover Effekt */
+tbody tr:hover {
+    background: #f1f5f9;
+}
+
+/* Zahlen rechts ausrichten */
+td:last-child {
+    text-align: right;
+    font-weight: 500;
+    color: #2e7d32;
+}
+
+    </style>
+</head>
+<body>
+<div class="header">
+    Hilde AG – ERP System
+</div>
+<div class="main">
+    <div class="card">
+        <h1>📦 Gesamtlagerwert</h1>
+        <p class="wert">💰 {{ wert }} €</p>
+        <a href="/lager">Abrechen/zurück zum lager</a>
+        <div class="content">
+            <h1> Lagerwert nach ort</h1>
+            <table>
+        <th>Lagerort</th>
+        <th>Wert (€) </th>
+        <tbody>
+        {% for zeile in orte %}
+        <tr>
+            <td>{{zeile[0]}}</td>
+            <td>{{zeile[1]}}</td>
+        </tr>
+        {%endfor%}
+
+        </tbody>
+    </table>
+
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+</body>
+</html>

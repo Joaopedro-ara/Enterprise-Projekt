@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Hilde ERP System</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background:#eef1f5;
+}
+
+/* Header */
+
+.header{
+    background:#1f2d3d;
+    color:white;
+    padding:20px 40px;
+    font-size:20px;
+    font-weight:600;
+}
+
+/* Hauptbereich */
+
+.main{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:80vh;
+}
+
+.card{
+    background:white;
+    padding:40px;
+    width:420px;
+    border-radius:10px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.card h1{
+    font-size:22px;
+    margin-bottom:10px;
+    color:#1f2d3d;
+}
+
+.card p{
+    color:#555;
+    margin-bottom:30px;
+}
+
+/* Buttons */
+
+.button{
+    display:block;
+    text-decoration:none;
+    padding:12px;
+    margin-bottom:12px;
+    border-radius:6px;
+    text-align:center;
+    font-weight:600;
+    transition:0.2s;
+}
+
+.login{
+    background:#2563eb;
+    color:white;
+}
+
+.register{
+    background:#e5e7eb;
+    color:#333;
+}
+
+.button:hover{
+    transform:translateY(-1px);
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Footer */
+
+.footer{
+    text-align:center;
+    color:#888;
+    font-size:13px;
+    margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+Hilde AG – ERP System
+</div>
+
+<div class="main">
+
+<div class="card">
+
+<h1>ERP Systemzugang</h1>
+
+<p>Bitte melden Sie sich mit Ihrem Benutzerkonto an oder erstellen Sie einen neuen Account.</p>
+
+<a class="button login" href="/login">Anmelden</a>
+
+<a class="button register" href="/register">Neuen Account erstellen</a>
+
+<div class="footer">
+ERP Plattform · Hilde AG
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

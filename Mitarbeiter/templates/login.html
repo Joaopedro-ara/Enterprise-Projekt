@@ -1,0 +1,146 @@
+```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Mitarbeiter Login – Hilde ERP</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background:#eef1f5;
+}
+
+/* Header */
+
+.header{
+    background:#1f2d3d;
+    color:white;
+    padding:20px 40px;
+    font-size:20px;
+    font-weight:600;
+}
+
+/* Layout */
+
+.main{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:85vh;
+}
+
+/* Login Karte */
+
+.card{
+    background:white;
+    padding:40px;
+    width:400px;
+    border-radius:10px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.card h1{
+    font-size:22px;
+    margin-bottom:10px;
+    color:#1f2d3d;
+}
+
+.card p{
+    color:#555;
+    margin-bottom:25px;
+}
+
+/* Formular */
+
+form{
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    font-weight:600;
+    margin-top:10px;
+    margin-bottom:4px;
+    color:#333;
+}
+
+input{
+    padding:10px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:14px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#2563eb;
+}
+
+/* Button */
+
+button{
+    margin-top:20px;
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    background:#2563eb;
+    color:white;
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1e4fd1;
+}
+
+.footer{
+    text-align:center;
+    font-size:13px;
+    color:#888;
+    margin-top:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+Hilde AG – ERP System
+</div>
+
+<div class="main">
+
+<div class="card">
+
+<h1>Mitarbeiter Login</h1>
+
+<p>Bitte melden Sie sich mit Ihrer Mitarbeiter-ID und Ihrem Passwort an.</p>
+
+<form action="/login" method="POST">
+
+<label for="username">Mitarbeiter-ID</label>
+<input type="text" id="mitarbeiter_id" name="mitarbeiter_id" required>
+
+<label for="password">Passwort</label>
+<input type="password" id="password" name="password" required>
+
+<button type="submit">Anmelden</button>
+
+</form>
+
+<div class="footer">
+ERP Zugriffssystem · Hilde AG
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
+```

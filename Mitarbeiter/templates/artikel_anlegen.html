@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Artikelanlegen</title>
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #eef1f5;
+        }
+        .header {
+            background: #1f2d3d;
+            color: white;
+            padding: 20px 40px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .main{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 85vh;
+        }
+        .card{
+            background:white;
+            padding:40px;
+            width:420px;
+            border-radius:10px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.08);
+        }
+        .card h1{
+           font-size:22px;
+            margin-bottom:10px;
+            color:#1f2d3d;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+        }
+        label{
+            font-weight: 600;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            color: #333333;
+        }
+        input{
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid#ccc;
+            font-size: 14px;
+        }
+        input:focus{
+            outline:none;
+            border-color: #2563eb;
+        }
+        button{
+            margin-top:20px;
+            padding:12px;
+            border:none;
+            border-radius:6px;
+            background:#2563eb;
+            color:white;
+            font-weight:600;
+            font-size:15px;
+            cursor:pointer;
+        }
+        button:hover{
+           background:#1e4fd1;
+        }
+        .footer{
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+            margin-top: 15px;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+<div class="header">
+    Hilde AG-ERP System
+</div>
+<div class="main">
+    <div class="card">
+        <h1> Artikel im Lagerbestand anlegen</h1>
+        <form action="{{ url_for('artikel_anlegen') }}" method="POST">
+            <label for="Artikelnummer">Artikelnummer</label>
+            <input type="Text" id="Artikelnummer" name="Artikelnummer" required>
+
+            <label for="Bezeichnung">Bezeichnung</label>
+            <input type="Text" id="Bezeichnung" name="Bezeichnung" required>
+
+             <label for="Kategorie">Kategorie</label>
+             <input type="Text" id="Kategorie" name="Kategorie" required>
+
+            <label for="Menge">Menge</label>
+            <input type="number" id="Menge" name="Menge" required>
+
+            <label for="Einheit">Einheit</label>
+            <input type="Text" id="Einheit" name="Einheit" required>
+
+            <label for="Preis">Preis</label>
+            <input type="number" step="0.01" id="Preis" name="Preis" required>
+
+            <label for="Lagerort">Lagerort</label>
+            <input type="Text" id="Lagerort" name="Lagerort" required>
+
+            <button type="submit">Artikel speichern</button>
+        <a href="/lager">Abrechen/zurück zum lager</a>
+        </form>
+        <div class="footer">
+            ERP Artikelanlegen. Hilde AG
+        </div>
+
+
+
+    </div>
+</div>
+
+</body>
+</html>
