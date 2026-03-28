@@ -68,6 +68,10 @@ body{
     background:#2563eb;
     color:white;
 }
+.Produktionsverwaltung{
+    background:#374151;
+    color: white;
+}
 
 .logout{
     background:#e5e7eb;
@@ -111,6 +115,7 @@ Ihre Rolle: <strong>{{ nutzer_Rolle }}</strong>
 
 <a class="button lager" href="/lager">Lagerverwaltung öffnen</a>
 
+<a class="button Produktionsverwaltung" href="{{url_for('produktion.prod_dash')}}">Produktionsverwaltung</a>
 <a class="button logout" href="/logout">Abmelden</a>
 
 <div class="footer">
