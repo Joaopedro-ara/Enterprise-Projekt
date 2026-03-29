@@ -80,7 +80,7 @@ Hilde AG – ERP System
 <div class="container" >
     <div class="sidebar">
         <a class="button bestand anzeigen">Bestand anzeigen</a>
-        {%if nutzer_Rolle=='Schichtleiter' or nutzer_Rolle=='Lagermanager'%}
+        {%if nutzer_Rolle=='Lagerschichtleiter' or nutzer_Rolle=='Lagermanager'%}
         <a  href="{{ url_for('artikel_anlegen') }}" class="button Neuen Artikel anlegen">Neue Artikel anlegen</a>
         <a href= "{{ url_for('artikel_aendern') }}"class="button Artikelbestand-ändern">Artikelbestand-Ändern</a>
         <a href="{{ url_for('excel_export') }}" class="button excsel export ">Exportieren in Excel Datei</a>

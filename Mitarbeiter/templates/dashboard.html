@@ -112,10 +112,13 @@ Ihre Mitarbeiter-ID: <strong>{{ nutzer_id }}</strong>
 <p class="info">
 Ihre Rolle: <strong>{{ nutzer_Rolle }}</strong>
 </p>
-
+{%if nutzer_Rolle=='Lagerarbeiter' or nutzer_Rolle=='Lagerschichtleiter' or nutzer_Rolle=='Lagermanager'%}
 <a class="button lager" href="/lager">Lagerverwaltung öffnen</a>
+{%endif%}
 
+{%if nutzer_Rolle =='Produktionsarbeiter' or nutzer_Rolle=='Produktionsschichtleiter' or nutzer_Rolle=='Produktionsleiter' or nutzer_Rolle=='Werksleiter'%}
 <a class="button Produktionsverwaltung" href="{{url_for('produktion.prod_dash')}}">Produktionsverwaltung</a>
+{% endif %}
 <a class="button logout" href="/logout">Abmelden</a>
 
 <div class="footer">
