@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dasbaord Für die Produktion</title>
+    <style>
+        body{
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #eef1f5;
+        }
+        .header{
+            background: #1f2d3d;
+            color: white;
+            padding: 20px 40px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .main
+        {
+            background:white;
+            color:#374151;
+            padding: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius:8px ;
+        }
+        .main h1{
+            font-size:22px;
+            margin-bottom:10px;
+            color:#1f2d3d;
+            text-align: center;
+
+
+        }
+        .header {
+            background: #1f2d3d;
+            color: white;
+            padding: 20px 40px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .container
+        {
+            display: flex;
+            flex:auto;
+            background: gainsboro;
+            color: black;
+            gap:20px;
+            padding: 20px;
+        }
+        .sidebar{
+            width: 250px;
+            background:#2f2a6b;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap:15px;
+        }
+        .sidebar a{
+            background: white;
+            color: #1f2d3d;
+            padding: 12px 15px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .sidebar a:hover{
+            background: #e0e6ed;
+        }
+        .content{
+            flex: 1;
+            background: aliceblue;
+            color: #243447;
+            padding: 30px;
+            border-radius: 8px;
+            overflow-y: auto;
+        }
+        table{
+            width:100%;
+            border-collapse: collapse;
+            margin-top:20px ;
+        }
+        th,td{
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom:1px solid #1f2d3d;
+        }
+
+    </style>
+</head>
+<body>
+<div class ="header">
+    Hilde AG-ERP System
+</div>
+<div class="main">
+    <h1> Dashboard für die Produktion</h1>
+</div>
+<div class="container">
+    <div class="sidebar">
+        <a class="button Maschinen anzeigen lassen">Bestand Anzeigen</a>
+        {%if nutzer_Rolle =='Produktionsarbeiter' or nutzer_Rolle=='Produktionsschichtleiter' or nutzer_Rolle=='Produktionsleiter' or nutzer_Rolle=='Werksleiter'%}
+        <a class="button Maschinen hinzufügen">Maschinen Anlegen</a>
+        {% endif %}
+        <a class="Button Dasboard aufrufen" href="/dashboard">Zurück zu dashboard</a>
+    </div>
+    <div class="content">
+         <h1> Maschinenbestand</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Maschinen_id</th>
+            <th>Bezeichnung</th>
+            <th>Kategorie</th>
+            <th>Letze_wartung</th>
+            <th>Naechste_wartung</th>
+            <th>Produktions_Ort</th>
+            <th>Halle</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for zeile in bestandsliste %}
+        <tr>
+                <td> {{zeile[0]}}</td>
+                <td> {{zeile[1]}}</td>
+                <td> {{zeile[2]}}</td>
+                <td> {{zeile[3]}}</td>
+                <td> {{zeile[4]}}</td>
+                <td> {{zeile[5]}}</td>
+                <td> {{zeile[6]}}</td>
+                <td> {{zeile[7]}}</td>
+        </tr>
+        {% endfor%}
+
+        </tbody>
+    </table>
+
+    </div>
+
+
+</div>
+
+</body>
+</html>

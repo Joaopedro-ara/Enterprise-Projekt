@@ -27,7 +27,7 @@ class produktion:
             return "Produkte wurden erfolgreich im Lager hinzugefügt"
 
     def maschinen_abrufen(self):
-        sql=("Select Maschinen_id,Bezeichnung,Kategorie,Baujahr,Anschaffungskosten,Restwert,Letze_Wartung,Naechste_wartung,"
+        sql=("Select Maschinen_id,Bezeichnung,Kategorie,Letze_Wartung,Naechste_wartung,"
              "Produktions_Ort,Halle,Status from prod_maschinen ")
         self.cursor.execute(sql)
         daten=self.cursor.fetchall()

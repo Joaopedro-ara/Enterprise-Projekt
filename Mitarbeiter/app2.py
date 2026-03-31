@@ -57,6 +57,10 @@ def login():
 def lager_a():
     if 'nutzer_id' not in  session:
         return redirect(url_for('index'))
+    aktuelle_rolle = session.get("rolle")
+    produktion_rolle = ["Produktionsarbeiter", "Produktionsschichtleiter", "Produktionsleiter", "Werksleiter"]
+    if aktuelle_rolle in produktion_rolle:
+        return redirect(url_for('dashboards'))
     else:
         daten=Lager.bestand_abrzufen()
         return render_template('lager.html',bestandsliste=daten,nutzer_Rolle=session.get('rolle'))
