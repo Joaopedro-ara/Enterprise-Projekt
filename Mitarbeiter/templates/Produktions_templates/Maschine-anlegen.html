@@ -1,154 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Neue Maschinen Anlegen</title>
-    <style>
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            margin: 0;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background: #eef1f5;
-        }
-        .header {
-            background: #1f2d3d;
-            color: white;
-            padding: 20px 40px;
-            font-size: 20px;
-            font-weight: 600;
-        }
-        .main{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 85vh;
-        }
-        .card{
-            background:white;
-            padding:40px;
-            width:420px;
-            border-radius:10px;
-            box-shadow:0 8px 20px rgba(0,0,0,0.08);
-        }
-        .card h1{
-           font-size:22px;
-            margin-bottom:10px;
-            color:#1f2d3d;
-        }
-        form{
-            display: flex;
-            flex-direction: column;
-        }
-        label{
-            font-weight: 600;
-            margin-top: 10px;
-            margin-bottom: 4px;
-            color: #333333;
-        }
-        input{
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid#ccc;
-            font-size: 14px;
-        }
-        input:focus{
-            outline:none;
-            border-color: #2563eb;
-        }
-        button{
-            margin-top:20px;
-            padding:12px;
-            border:none;
-            border-radius:6px;
-            background:#2563eb;
-            color:white;
-            font-weight:600;
-            font-size:15px;
-            cursor:pointer;
-        }
-        button:hover{
-           background:#1e4fd1;
-        }
-        .footer{
-            text-align: center;
-            font-size: 13px;
-            color: #888;
-            margin-top: 15px;
-        }
-         input,select{
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid#ccc;
-            font-size: 14px;
-        }
-        input:focus,select:focus{
-            outline:none;
-            border-color: #2563eb;
-        }
-        button{
-            margin-top:20px;
-            padding:12px;
-            border:none;
-            border-radius:6px;
-            background:#2563eb;
-            color:white;
-            font-weight:600;
-            font-size:15px;
-            cursor:pointer;
-        }
-        button:hover{
-           background:#1e4fd1;
-        }
+{% extends 'base.html' %}
 
+{% block title %}Neue Maschinen Anlegen{% endblock %}
 
+{% block styles %}
+    .card { background: white; padding: 40px; width: 420px; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+    .card h1 { font-size: 22px; margin-bottom: 20px; color: #1f2d3d; }
+    form { display: flex; flex-direction: column; }
+    label { font-weight: 600; margin-top: 10px; margin-bottom: 4px; color: #333333; }
+    input, select { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; }
+    input:focus, select:focus { outline: none; border-color: #2563eb; }
+    button { margin-top: 20px; padding: 12px; border: none; border-radius: 6px; background: #2563eb; color: white; font-weight: 600; font-size: 15px; cursor: pointer; }
+    button:hover { background: #1e4fd1; }
+    .footer { text-align: center; font-size: 13px; color: #888; margin-top: 15px; }
+{% endblock %}
 
+{% block content %}
+<div class="card">
+    <h1>Produktionsmaschine anlegen</h1>
 
+    <form action="{{ url_for('produktion.maschine_anlegen') }}" method="POST">
+        <label for="Maschinen-Id">Maschinen-Id</label>
+        <input type="text" id="Maschinen-Id" name="Maschinen-Id" required>
 
-    </style>
-</head>
-<body>
-<div class="header">
-    Hilde AG-ERP System
+        <label for="Bezeichnung">Bezeichnung</label>
+        <input type="text" id="Bezeichnung" name="Bezeichnung" required>
+
+        <label for="Kategorie">Kategorie</label>
+        <input type="text" id="Kategorie" name="Kategorie" required>
+
+        <label for="Letzewartung">Letzte Wartung</label>
+        <input type="date" id="Letzewartung" name="Letzewartung" required>
+
+        <label for="Naechstewartung">Nächste Wartung</label>
+        <input type="date" id="Naechstewartung" name="Naechstewartung" required>
+
+        <label for="Produktionsort">Produktionsort</label>
+        <input type="text" id="Produktionsort" name="Produktionsort" required>
+
+        <label for="Halle">Halle</label>
+        <input type="text" id="Halle" name="Halle" required>
+
+        <label for="Status">Status</label>
+        <select name="Status" id="Status">
+            <option value="Aktiv">Aktiv</option>
+            <option value="Wartung">Wartung</option>
+            <option value="Defekt">Defekt</option>
+        </select>
+
+        <button type="submit">Maschine speichern</button>
+        <a href="/produktion_dashboard" style="display:block; text-align:center; margin-top:15px; text-decoration:none; color:#1f2d3d; font-weight:600;">Abbrechen / Zurück</a>
+    </form>
+
+    <div class="footer">ERP System · Hilde AG</div>
 </div>
-<div class="main">
-    <div class="card">
-        <h1> Produktionsmaschine anlegen</h1>
-        <form action="{{ url_for('Maschine-anlgen') }}" method="POST">
-            <label for="Maschinen-Id">Maschinen-Id</label>
-            <input type="Text" id="Maschinen-Id" name="Maschinen-Id" required>
-
-            <label for="Bezeichnung">Bezeichnung</label>
-            <input type="Text" id="Bezeichnung" name="Bezeichnung" required>
-
-             <label for="Kategorie">Kategorie</label>
-             <input type="Text" id="Kategorie" name="Kategorie" required>
-
-            <label for="Letzewartung">Letze-Wartung</label>
-            <input type="date" id="Letzewartung" name="Letzewartung" required>
-
-            <label for="Naechstewartung">Naechste_wartung</label>
-            <input type="date" id="Naechstewartung" name="Naechstewartung" required>
-
-            <label for="Produktionsort">Produktionsort</label>
-            <input type="text" id="Produktionsort" name="Produktionsort" required>
-
-            <label for="Halle">Halle</label>
-            <input type="text"  id="Halle" name="Halle" required>
-
-
-            <button type="submit">Artikel speichern</button>
-        <a href="/lager">Abrechen/zurück zum lager</a>
-        </form>
-        <div class="footer">
-            ERP Artikelanlegen. Hilde AG
-        </div>
-
-
-
-    </div>
-</div>
-
-</body>
-</html>
+{% endblock %}

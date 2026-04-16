@@ -1,134 +1,42 @@
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<title>Dashboard – Hilde ERP</title>
+{% block title %}Dashboard – Hilde ERP{% endblock %}
 
-<style>
+{% block styles %}
+    .card {
+        background: white;
+        padding: 40px;
+        width: 450px;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        text-align: center;
+    }
+    .card h1 { color: #1f2d3d; margin-bottom: 20px; }
+    .info { margin-bottom: 20px; font-size: 16px; }
+    .button { display: block; text-decoration: none; padding: 12px; margin-top: 10px; border-radius: 6px; font-weight: 600; }
+    .lager { background: #2563eb; color: white; }
+    .produktion { background: #374151; color: white; }
+    .logout { background: #e5e7eb; color: #333; }
+    .button:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .footer { margin-top: 20px; font-size: 13px; color: #888; }
+{% endblock %}
 
-body{
-    margin:0;
-    font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background:#eef1f5;
-}
+{% block content %}
+    <div class="card">
+        <h1>Dashboard</h1>
+        <p class="info">Willkommen zurück.<br>Ihre Mitarbeiter-ID: <strong>{{ nutzer_id }}</strong></p>
+        <p class="info">Ihre Rolle: <strong>{{ nutzer_Rolle }}</strong></p>
 
-/* Header */
+        {% if nutzer_Rolle in ['Lagermanager', 'Lagerarbeiter', 'Schichtleiter'] %}
+            <a class="button lager" href="/lager">Lagerverwaltung öffnen</a>
+        {% endif %}
 
-.header{
-    background:#1f2d3d;
-    color:white;
-    padding:20px 40px;
-    font-size:20px;
-    font-weight:600;
-}
+        {% if nutzer_Rolle in ['Produktionsarbeiter', 'Produktionsschichtleiter', 'Produktionsleiter', 'Werksleiter'] %}
+            <a class="button produktion" href="{{ url_for('produktion.prod_dash') }}">Produktionsverwaltung</a>
+        {% endif %}
 
-/* Layout */
+        <a class="button logout" href="/logout">Abmelden</a>
 
-.main{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:85vh;
-}
-
-/* Karte */
-
-.card{
-    background:white;
-    padding:40px;
-    width:450px;
-    border-radius:10px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.08);
-    text-align:center;
-}
-
-.card h1{
-    color:#1f2d3d;
-    margin-bottom:20px;
-}
-
-.info{
-    margin-bottom:20px;
-    font-size:16px;
-}
-
-/* Buttons */
-
-.button{
-    display:block;
-    text-decoration:none;
-    padding:12px;
-    margin-top:10px;
-    border-radius:6px;
-    font-weight:600;
-}
-
-.lager{
-    background:#2563eb;
-    color:white;
-}
-.Produktionsverwaltung{
-    background:#374151;
-    color: white;
-}
-
-.logout{
-    background:#e5e7eb;
-    color:#333;
-}
-
-.button:hover{
-    transform:translateY(-1px);
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-.footer{
-    margin-top:20px;
-    font-size:13px;
-    color:#888;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="header">
-Hilde AG – ERP System
-</div>
-
-<div class="main">
-
-<div class="card">
-
-<h1>Dashboard</h1>
-
-<p class="info">
-Willkommen zurück.<br>
-Ihre Mitarbeiter-ID: <strong>{{ nutzer_id }}</strong>
-</p>
-
-<p class="info">
-Ihre Rolle: <strong>{{ nutzer_Rolle }}</strong>
-</p>
-{%if nutzer_Rolle=='Lagerarbeiter' or nutzer_Rolle=='Lagerschichtleiter' or nutzer_Rolle=='Lagermanager'%}
-<a class="button lager" href="/lager">Lagerverwaltung öffnen</a>
-{%endif%}
-
-{%if nutzer_Rolle =='Produktionsarbeiter' or nutzer_Rolle=='Produktionsschichtleiter' or nutzer_Rolle=='Produktionsleiter' or nutzer_Rolle=='Werksleiter'%}
-<a class="button Produktionsverwaltung" href="{{url_for('produktion.prod_dash')}}">Produktionsverwaltung</a>
-{% endif %}
-<a class="button logout" href="/logout">Abmelden</a>
-
-<div class="footer">
-ERP Systemzugang · Hilde AG
-</div>
-
-</div>
-
-</div>
-
-</body>
-</html>
-```
+        <div class="footer">ERP Systemzugang · Hilde AG</div>
+    </div>
+{% endblock %}

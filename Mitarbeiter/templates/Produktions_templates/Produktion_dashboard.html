@@ -1,149 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dasbaord Für die Produktion</title>
-    <style>
-        body{
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            margin: 0;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background: #eef1f5;
-        }
-        .header{
-            background: #1f2d3d;
-            color: white;
-            padding: 20px 40px;
-            font-size: 20px;
-            font-weight: 600;
-        }
-        .main
-        {
-            background:white;
-            color:#374151;
-            padding: 20px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius:8px ;
-        }
-        .main h1{
-            font-size:22px;
-            margin-bottom:10px;
-            color:#1f2d3d;
-            text-align: center;
+{% extends 'base.html' %}
 
+{% block title %}Dashboard Für die Produktion{% endblock %}
 
-        }
-        .header {
-            background: #1f2d3d;
-            color: white;
-            padding: 20px 40px;
-            font-size: 20px;
-            font-weight: 600;
-        }
-        .container
-        {
-            display: flex;
-            flex:auto;
-            background: gainsboro;
-            color: black;
-            gap:20px;
-            padding: 20px;
-        }
-        .sidebar{
-            width: 250px;
-            background:#2f2a6b;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap:15px;
-        }
-        .sidebar a{
-            background: white;
-            color: #1f2d3d;
-            padding: 12px 15px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-        .sidebar a:hover{
-            background: #e0e6ed;
-        }
-        .content{
-            flex: 1;
-            background: aliceblue;
-            color: #243447;
-            padding: 30px;
-            border-radius: 8px;
-            overflow-y: auto;
-        }
-        table{
-            width:100%;
-            border-collapse: collapse;
-            margin-top:20px ;
-        }
-        th,td{
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom:1px solid #1f2d3d;
-        }
+{% block styles %}
+    /* Da base.html alles zentriert, sagen wir dem Container, er soll die volle Breite nutzen */
+    .container { display: flex; width: 100%; min-height: 75vh; background: gainsboro; color: black; gap: 20px; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+    .sidebar { width: 250px; background: #2f2a6b; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+    .sidebar a { background: white; color: #1f2d3d; padding: 12px 15px; text-decoration: none; font-weight: 500; transition: background 0.2s; border-radius: 4px; text-align: center; }
+    .sidebar a:hover { background: #e0e6ed; }
+    .content-area { flex: 1; background: aliceblue; color: #243447; padding: 30px; overflow-y: auto; }
+    h1 { font-size: 24px; margin-bottom: 20px; color: #1f2d3d; border-bottom: 2px solid #1f2d3d; padding-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 6px; overflow: hidden; }
+    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ccc; }
+    th { background: #1f2d3d; color: white; }
+{% endblock %}
 
-    </style>
-</head>
-<body>
-<div class ="header">
-    Hilde AG-ERP System
-</div>
-<div class="main">
-    <h1> Dashboard für die Produktion</h1>
-</div>
+{% block content %}
 <div class="container">
     <div class="sidebar">
-        <a class="button Maschinen anzeigen lassen">Bestand Anzeigen</a>
-        {%if nutzer_Rolle =='Produktionsarbeiter' or nutzer_Rolle=='Produktionsschichtleiter' or nutzer_Rolle=='Produktionsleiter' or nutzer_Rolle=='Werksleiter'%}
-        <a class="button Maschinen hinzufügen">Maschinen Anlegen</a>
+        <a href="#">Bestand Anzeigen</a>
+        {% if nutzer_Rolle in ['Produktionsarbeiter', 'Produktionsschichtleiter', 'Produktionsleiter', 'Werksleiter'] %}
+            <a href="{{ url_for('produktion.maschine_anlegen') }}">Maschinen Anlegen</a>
         {% endif %}
-        <a class="Button Dasboard aufrufen" href="/dashboard">Zurück zu dashboard</a>
-    </div>
-    <div class="content">
-         <h1> Maschinenbestand</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>Maschinen_id</th>
-            <th>Bezeichnung</th>
-            <th>Kategorie</th>
-            <th>Letze_wartung</th>
-            <th>Naechste_wartung</th>
-            <th>Produktions_Ort</th>
-            <th>Halle</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for zeile in bestandsliste %}
-        <tr>
-                <td> {{zeile[0]}}</td>
-                <td> {{zeile[1]}}</td>
-                <td> {{zeile[2]}}</td>
-                <td> {{zeile[3]}}</td>
-                <td> {{zeile[4]}}</td>
-                <td> {{zeile[5]}}</td>
-                <td> {{zeile[6]}}</td>
-                <td> {{zeile[7]}}</td>
-        </tr>
-        {% endfor%}
-
-        </tbody>
-    </table>
-
+        <a href="/dashboard">Zurück zum Dashboard</a>
     </div>
 
+    <div class="content-area">
+        <h1>Maschinenbestand</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Maschinen_id</th>
+                    <th>Bezeichnung</th>
+                    <th>Kategorie</th>
+                    <th>Letzte Wartung</th>
+                    <th>Nächste Wartung</th>
+                    <th>Ort</th>
+                    <th>Halle</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for zeile in bestandsliste %}
+                <!--Um genau zusehen welche Maschine defekt müssen wir etwas umändern um die zeile dann genau
+                zu  auf die zeile der madschine zu fokussieren
+                1. <tr> schleife das am die Maschine id als name genutz wird-->
 
+                <tr id="reihe-{{zeile[0]}}">
+                    <td>{{ zeile[0] }}</td>
+                    <td>{{ zeile[1] }}</td>
+                    <td>{{ zeile[2] }}</td>
+                    <td>{{ zeile[3] }}</td>
+                    <td>{{ zeile[4] }}</td>
+                    <td>{{ zeile[5] }}</td>
+                    <td>{{ zeile[6] }}</td>
+                    <td>
+                        <span id="status-text-{{zeile[0]}}">{{zeile[7]}}</span>
+                        <span id="info-{{zeile[0]}}" style="display: none;cursor: help;"
+                                            title="Achtung: Maschine wird gleich abgeschlatet!">🚨</span>
+                        <!-- Hier haben wir gerade einen kliner Infopont erstellen u fall die Maschine defekt ist,
+                        das sie sagt achtunbg Maschine defekt-->
+                    </td>
+                    <!--<td>{{ zeile[8] }}</td>-->
+
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+        <script> <!-- hier kommt der javascript code rein-->
+                // Timer der alles 30 sekunden ei ide funktion ausführt
+                setInterval(function (){
+                    // WIr rufen die phython-Api auf mit fetch
+                    //Fetch steuert eine Anfrage von eine Donain zu eine andere domain
+                    fetch('/api/maschinen_status')
+                        .then(response=>response.json()) // wandelt die Antwort eine Fetch-Request in eine json um-> um daten weiterzuverabeiten
+                        .then(maschinen_daten =>{
+                            // Maschinen liste durchsuchen
+                            for(let maschine of maschinen_daten){
+                                document.getElementById("status-text-" + maschine.maschinen_id).innerText = maschine.Status;
+                                // if anfragen suchen welche maschine defekt sind
+                                if(maschine.Status==="Defekt"){
+                                    // hier setzen wir ein Alrm wie wenn die masdchine defekt ist,soll das Hintergrund
+                                    // rot färben
+                                    document.getElementById("reihe-"+maschine.maschinen_id).style.backgroundColor="#ffb3b3";
+                                    document.getElementById("info-"+maschine.maschinen_id).style.display="inline";
+                                }else if(maschine.Status==="Störung"){
+                                    document.getElementById("info-"+maschine.maschinen_id).title="Maschine hat eine störung.Bitte Nachsehen.";
+                                    document.getElementById("info-"+maschine.maschinen_id).innerText="⚠️"
+                                    document.getElementById("reihe-"+maschine.maschinen_id).style.backgroundColor="#ffe066";
+                                    document.getElementById("info-"+maschine.maschinen_id).style.display="inline";
+                                }
+                            }
+
+                        });
+                },5000)
+
+                </script>
+    </div>
 </div>
-
-</body>
-</html>
+{% endblock %}
