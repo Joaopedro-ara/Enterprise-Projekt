@@ -69,6 +69,7 @@
             </tbody>
         </table>
         <script> <!-- hier kommt der javascript code rein-->
+        let countdown_speicher={}; // hier ist das gedächnis also das wenn eine Maschine kaoutt geht dann völig abhängig von den 30 sekunden schalter ist
                 // Timer der alles 30 sekunden ei ide funktion ausführt
                 setInterval(function (){
                     // WIr rufen die phython-Api auf mit fetch
@@ -85,6 +86,25 @@
                                     // rot färben
                                     document.getElementById("reihe-"+maschine.maschinen_id).style.backgroundColor="#ffb3b3";
                                     document.getElementById("info-"+maschine.maschinen_id).style.display="inline";
+                                    if(countdown_speicher[maschine.maschinen_id]===undefined){
+                                        countdown_speicher[maschine.maschinen_id]=60
+                                        // Wenn es kaputt geht also neu kaputt geht
+
+                                    }else{
+                                        // Schon länger Kaputt
+                                        countdown_speicher[maschine.maschinen_id]-=5
+                                    }
+                                    // Anzeiger in System
+                                    if(countdown_speicher[maschine.maschinen_id]>0){
+                                            document.getElementById("status-text-" + maschine.maschinen_id).innerText =
+                                            "Defekt(Abschaltung in "+countdown_speicher[maschine.maschinen_id]+ " s)";
+                                    }else {
+                                        document.getElementById("status-text-" + maschine.maschinen_id).innerText ="Abgeschaltet"
+                                        document.getElementById("info-" + maschine.maschinen_id).innerText = "🛑"
+                                        document.getElementById("reihe-" + maschine.maschinen_id).style.backgroundColor = "#a9a9a9";
+                                        document.getElementById("info-"+maschine.maschinen_id).title="Maschine wird Abgeschaltet"
+                                        document.getElementById("info-"+maschine.maschinen_id).style.display="inline";
+                                    }
                                 }else if(maschine.Status==="Störung"){
                                     document.getElementById("info-"+maschine.maschinen_id).title="Maschine hat eine störung.Bitte Nachsehen.";
                                     document.getElementById("info-"+maschine.maschinen_id).innerText="⚠️"
@@ -94,7 +114,7 @@
                             }
 
                         });
-                },5000)
+                },10000)
 
                 </script>
     </div>
