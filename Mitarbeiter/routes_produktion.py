@@ -49,9 +49,21 @@ def api_maschinen_status():
             zufall=random.randint(1,100)
             if zufall <=5:
                 prod.status_aendern( maschinen_id,"Störung")
-        elif Status==("Störung"):
-            zufal=random.randint(1,100)
-            if zufal<=10:
+        elif Status=="Störung":
+            zufall=random.randint(1,100)
+            if zufall<=10:
+                prod.status_aendern(maschinen_id, "Defekt")
+        elif Status=="Wartung":
+            zufall=random.randint(1,100)
+            if zufall<=20: #in jeden takt gibnbt es eine 20% chance, dass die wartung fertig ist
+                prod.status_aendern(maschinen_id, "Testlauf")
+        elif Status=="Testlauf":
+            zufall=random.randint(1,100)
+            if zufall <=70:
+                prod.status_aendern(maschinen_id, "Aktiv")
+            elif zufall >=71 and zufall<=85:
+                prod.status_aendern(maschinen_id, "Störung")
+            else:
                 prod.status_aendern(maschinen_id, "Defekt")
     frische_daten=prod.maschinen_abrufen()
     maschinen_pake=[]
@@ -63,27 +75,14 @@ def api_maschinen_status():
         maschinen_pake.append(maschinen_dict)
     return jsonify(maschinen_pake)
 
+#Neue Route um die reparier button zu betetigen und die Maschine zu Reparieren manuell
+#und auch diue datenbank zu ändern auf den statu defekt zu repariert
+@produktion_bp.route('/api/reparieren/<maschinen_id>',methods=["POST"])
+def reparieren(maschinen_id):
+    prod.status_aendern( maschinen_id,"Wartung") #hier wird der status auf Warung verändert
+    if not maschinen_id:
+        return jsonify({"status":"fehler"}),400
+    return jsonify({"status":"erfolg"})
 
 
-    #zufaelig=random.randint(1,100)
-    #if zufaelig < 5:
-         #maschinen=prod.maschinen_abrufen()
-         #if maschinen:
-             #opfer=random.choice(maschinen) #hier wählen wir eine zufällige maschine
-             #opfern_id=opfer[0]#Maschinend id ist das erste index im Tupel
-             #prod.status_aendern(opfern_id,"Defekt") # hier setzen wir den status auf opfer um
-
-    #aktuele_daten=prod.maschinen_abrufen() # hoeön der Aktuelen daten aus den Maschinen abrufen
-    #manschinen_pake=[] # hier machen wir die Maschinnen informationen rein
-    #for maschinen in aktuele_daten: # hier geht die For_schleife durch die Aktuelnen daten:
-        #maschinen_dict={
-           #"maschinen_id": maschinen[0],
-            #"Bezeichnung": maschinen[1],
-            #"Produktions_ort":maschinen[5],
-           # "Halle":maschinen[6],
-           # "Status": maschinen[7]
-
-        #}
-        #manschinen_pake.append(maschinen_dict)
-    #return jsonify(manschinen_pake)
 

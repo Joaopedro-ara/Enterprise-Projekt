@@ -19,7 +19,7 @@
 <div class="container">
     <div class="sidebar">
         <a href="#">Bestand Anzeigen</a>
-        {% if nutzer_Rolle in ['Produktionsarbeiter', 'Produktionsschichtleiter', 'Produktionsleiter', 'Werksleiter'] %}
+        {% if nutzer_Rolle in ['Produktionsschichtleiter', 'Produktionsleiter', 'Werksleiter'] %}
             <a href="{{ url_for('produktion.maschine_anlegen') }}">Maschinen Anlegen</a>
         {% endif %}
         <a href="/dashboard">Zurück zum Dashboard</a>
@@ -60,6 +60,11 @@
                                             title="Achtung: Maschine wird gleich abgeschlatet!">🚨</span>
                         <!-- Hier haben wir gerade einen kliner Infopont erstellen u fall die Maschine defekt ist,
                         das sie sagt achtunbg Maschine defekt-->
+                        {% if nutzer_Rolle in ['Produktionsschichtleiter', 'Produktionsleiter', 'Werksleiter'] %}
+                        <button onclick="Reparieren('{{zeile[0]}}')">Reparieren</button>
+                        {% endif %}
+                        <!-- Dieser button soll dienen als Reparier button, um maschinen zu reparieren -->
+                        {
                     </td>
                     <!--<td>{{ zeile[8] }}</td>-->
 
@@ -102,19 +107,44 @@
                                         document.getElementById("status-text-" + maschine.maschinen_id).innerText ="Abgeschaltet"
                                         document.getElementById("info-" + maschine.maschinen_id).innerText = "🛑"
                                         document.getElementById("reihe-" + maschine.maschinen_id).style.backgroundColor = "#a9a9a9";
-                                        document.getElementById("info-"+maschine.maschinen_id).title="Maschine wird Abgeschaltet"
-                                        document.getElementById("info-"+maschine.maschinen_id).style.display="inline";
+                                        document.getElementById("info-"+ maschine.maschinen_id).title="Maschine wird Abgeschaltet"
+                                        document.getElementById("info-"+ maschine.maschinen_id).style.display="inline";
                                     }
                                 }else if(maschine.Status==="Störung"){
-                                    document.getElementById("info-"+maschine.maschinen_id).title="Maschine hat eine störung.Bitte Nachsehen.";
-                                    document.getElementById("info-"+maschine.maschinen_id).innerText="⚠️"
-                                    document.getElementById("reihe-"+maschine.maschinen_id).style.backgroundColor="#ffe066";
-                                    document.getElementById("info-"+maschine.maschinen_id).style.display="inline";
-                                }
+                                    document.getElementById("info-"+ maschine.maschinen_id).title="Maschine hat eine störung.Bitte Nachsehen.";
+                                    document.getElementById("info-"+ maschine.maschinen_id).innerText="⚠️"
+                                    document.getElementById("reihe-"+ maschine.maschinen_id).style.backgroundColor="#ffe066";
+                                    document.getElementById("info-"+ maschine.maschinen_id).style.display="inline";
+                                }else if(maschine.Status==="Aktiv"){
+                                    document.getElementById("reihe-"+ maschine.maschinen_id).style.backgroundColor="#ffffff";
+                                    document.getElementById("info-"+ maschine.maschinen_id).title="Maschine Wurde Repariert.";
+                                    document.getElementById("info-"+ maschine.maschinen_id).innerText="🔧"
+                                    document.getElementById("info-"+ maschine.maschinen_id).style.display="inline";
+                                }else if(maschine.Status==="Wartung") {
+                                    document.getElementById("reihe-" + maschine.maschinen_id).style.backgroundColor = "#add8e6";
+                                    document.getElementById("info-" + maschine.maschinen_id).title = "Maschine wird gewartet";
+                                    document.getElementById("info-" + maschine.maschinen_id).innerText = "⏳"
+                                    document.getElementById("info-" + maschine.maschinen_id).style.display = "inline";
+                                }else if (maschine.Status==="Testlauf"){
+                                    document.getElementById("reihe-"+ maschine.maschinen_id).style.backgroundColor="#dda0dd";
+                                    document.getElementById("info-"+ maschine.maschinen_id).title="Testlauf läuft...";
+                                    document.getElementById("info-"+maschine.maschinen_id).innerText="🔬"
+                                    document.getElementById("info-"+ maschine.maschinen_id).style.display="inline";
                             }
+                                }
+
 
                         });
                 },10000)
+                function Reparieren(maschinen_id){ // hier verbinden den button mit der Api route
+                 fetch('/api/reparieren/'+maschinen_id,{method:'POST'})
+                     .then(response => Response.json()).then(data=>{
+                         delete countdown_speicher[maschinen_id];
+
+
+                 });
+                }
+
 
                 </script>
     </div>
