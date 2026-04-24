@@ -1,4 +1,4 @@
-from db_Mitarbeiter import Datenbank
+from titanflow_enterprise.Mitarbeiter.db_Mitarbeiter import Datenbank
 import bcrypt
 print("Willkomen im TitanEnterprise Menü")
 
@@ -95,6 +95,17 @@ class usermanger:
             return rolle
         else:
             return False
+
+    def maschinelog(self,maschinen_id,fehlercode,info_fehler,datum,Dauer,Status,Dienstnummer,prioritaet):
+        try:
+            sql=("Insert into  maschinen_logbuch(Maschinen_id,Fehlercode,Info_Fehler,Datum,Dauer_in_min,Status,Dienstnummer,Prioritaet )"
+             "values(%s,%s,%s,%s,%s,%s,%s,%s)")
+            val=(maschinen_id,fehlercode,info_fehler,datum,Dauer,Status,Dienstnummer,prioritaet)
+            self.cursor.execute(sql,val)
+            self.db.connection.commit()
+            return "Eintrag erfolgrreich ins Maschine logbuch"
+        except Exception as e:
+            print("❌ Fehler beim Insert:", e)
 
 
 

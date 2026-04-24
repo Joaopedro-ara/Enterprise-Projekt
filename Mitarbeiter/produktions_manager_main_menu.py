@@ -1,4 +1,4 @@
-from Produktions_manager import produktion
+from titanflow_enterprise.Mitarbeiter.Produktions_manager import produktion
 from datetime import datetime
 from decimal import Decimal
 while True:

@@ -45,6 +45,17 @@ class Datenbank:
                                 "Produktions_Ort Varchar(255),"
                                 "Halle Varchar(255),"
                                 "Status Varchar(255))")
+            self.cursor.execute("Create Table if not exists maschinen_logbuch(Log_id Int auto_increment Primary key,"
+                                "Maschinen_id Varchar(255) ,"
+                                "Fehlercode Varchar(255),"
+                                "Info_Fehler Text,"
+                                "Datum Datetime," # Wann ist der fehler Passeirt
+                                "Dauer_in_min Integer," # Wie lange dauert der Ausdfall der Maschine
+                                "Status Varchar(255)," # Wie ist der Status der maschine reperatur: 1: offen,2:In beaberitung,3: gelöst 
+                                "Dienstnummer Varchar(255)," #Welche Mitarbeiter es bearbeitet hat
+                                "Prioritaet Integer," # hier 1:Wichtig,2: Milltel 3:Nicht so wichtigg 
+                                "FOREIGN KEY(Maschinen_id) References prod_Maschinen(Maschinen_id),"
+                                "FOREIGN KEY(Dienstnummer) References Employers(Dienstnummer))")
             self.connection.commit()
             print("Tabelle wurde erfolgreich hergestellt")
         except Exception as e:

@@ -1,11 +1,13 @@
-from use_case import usermanger
-from Lager_manager import Lagermanger
+from titanflow_enterprise.Mitarbeiter.use_case import usermanger
+from titanflow_enterprise.Mitarbeiter.Lager_manager import Lagermanger
+from datetime import datetime
 
 while True:
     print("Wähle option:")
     print("1 Registrieren")
     print("2 Anmelden")
-    print("3 Benden")
+    print("3 Maschine log")
+    print("4 Benden")
     auswahl=input("Wähle 1- 4 Punkte aus: ")
     try:
         if auswahl =="1":
@@ -23,7 +25,8 @@ while True:
                         print("4: Bestand ändern")
                         print("5: Bestand Warnung aufprüfen")
                         print("6:Lagerwert ")
-                        print("7: Benden")
+                        print("7: testlog")
+                        print("8: Benden")
                         auswahl = input("Welcher der punkte 1-7 wählst du ")
                         lager=Lagermanger()
 
@@ -93,16 +96,33 @@ while True:
                             else:
                                 print("Sie haben Kein zugang für weitere dienste , für weitere Informationen melden sich "
                                       "an den Vorgesetzen")
+
                         elif auswahl=="7":
                             break
                         else:
                             print("Bitte nur zahlen eingeben")
+        elif auswahl=="3":
+            print("Maschine ein")
+            maschine_id = input("maschinen id: ")
+            fehlercode= input("fehlercode eingeben: ")
+            info_fehler = input(" info eingeben: ")
+            datum_str = input("Datum eingeben (YYYY-MM-DD HH:MM:SS): ")
+            datum = datetime.strptime(datum_str, "%Y-%m-%d %H:%M:%S")
+            Dauer= int(input("Dauer in min(dauer wie lange maschine stgehen gebliewbewn ist..: "))
+            Status = input("Wie ist staurs: ")
+            Dienstnummer= input("dienstnummer des mitarbeiters")
+            prioritaet=int(input("Welche priorität hat es?: "))
+            user_manger = usermanger()
+            user_manger.maschinelog(maschine_id,fehlercode,info_fehler,datum, Dauer, Status, Dienstnummer, prioritaet)
 
 
 
 
 
-        elif auswahl =="3":
+
+
+
+        elif auswahl =="4":
             break
         else:
             print("Keine nummer ausgewählt")

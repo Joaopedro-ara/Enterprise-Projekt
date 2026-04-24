@@ -1,4 +1,4 @@
-from db_Mitarbeiter import Datenbank
+from titanflow_enterprise.Mitarbeiter.db_Mitarbeiter import Datenbank
 from openpyxl import Workbook
 class Lagermanger:
     def __init__(self): # verbindung zu datenbanbk herstellen
@@ -156,6 +156,8 @@ class Lagermanger:
         if data is None:
             return "Keine Daten gefunden"
         return data
+
+
 
 
 

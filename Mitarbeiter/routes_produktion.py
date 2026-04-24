@@ -1,7 +1,7 @@
 #Hoier machen wir die Blueflask für die prodution damit wir später in der app.py benutzen können
-from flask import Flask,render_template,request,redirect,url_for,session,send_file,Blueprint,jsonify
+from flask import render_template,request,redirect,url_for,session, Blueprint,jsonify
 #Ein blueprint ist ähnlich wie eine Mehrfachsteckdoese wo wir unseren viel stecker hinzufügen können
-from Produktions_manager import produktion
+from titanflow_enterprise.Mitarbeiter.Produktions_manager import produktion
 import random
 
 produktion_bp=Blueprint('produktion',__name__)

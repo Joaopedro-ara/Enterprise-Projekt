@@ -1,5 +1,5 @@
-from db_Mitarbeiter import Datenbank
-from openpyxl import Workbook
+from titanflow_enterprise.Mitarbeiter.db_Mitarbeiter import Datenbank
+
 
 class produktion:
     def __init__(self):
@@ -40,6 +40,7 @@ class produktion:
             self.cursor.execute(sql,(neuer_status,maschinen_id))#neue status und maschine id diensen als platzhalter
             self.db.connection.commit()
             return "Update Status erfolgreich"
+
 
 
 
