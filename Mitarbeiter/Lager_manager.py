@@ -1,23 +1,28 @@
 from titanflow_enterprise.Mitarbeiter.db_Mitarbeiter import Datenbank
 from openpyxl import Workbook
+## ERP_MOdul für das Modul Des Lager wo wir Lagerbestände Einfügen können,Lagerbestände sehen können,Wert des lagers
+#um abschliefßen die def  funktionen verbindung dung zum App2.py wo wir
+
 class Lagermanger:
     def __init__(self): # verbindung zu datenbanbk herstellen
         self.db=Datenbank()
         self.cursor=self.db.cursor
 
     def Artikelnummer_pruefen(self,artikelnummer):
-        #hier prüfe ich ob es die Artikelnummer gibt.
+        #prüft ob die angegeben Artiekle bereist im lagesbestand ist
         sql="Select Artikelnummer from Lagerbestand where Artikelnummer=%s" #hier suche ich  den Artikelnummer raus
         self.cursor.execute(sql,(artikelnummer,))
         return self.cursor.fetchone() is not None
 
     def Artikel_anlegen(self,artikelnummer,bezeichnung,kategorie,menge,einheit,preis,lagerort):
-        if self.Artikelnummer_pruefen(artikelnummer): #hier will ich prüfen ob ich das Artiklenummer wenn es gibt dann return False zurück
-            return False #Artikel existiert schon
+        # Prüft, ob die Artikelnummer bereits existiert
+        # Falls ja, wird False zurückgegeben (Artikel darf nicht doppelt angelegt werden)
+        if self.Artikelnummer_pruefen(artikelnummer):
+            return False
         else:
             sql=("Insert into Lagerbestand(Artikelnummer,Bezeichnung,Kategorie,Menge,Einheit,Preis,Lagerort) Values "
-                 "(%s,%s,%s,%s,%s,%s,%s) ") # hier  machen wir eine insert in die datenbank
-            val=(artikelnummer,bezeichnung,kategorie,menge,einheit,preis,lagerort)
+                 "(%s,%s,%s,%s,%s,%s,%s) ") # Einfügen der werte in der datenbank
+            val=(artikelnummer,bezeichnung,kategorie,menge,einheit,preis,lagerort) # values geben zu den Tabellen
             self.cursor.execute(sql,val)
             self.db.connection.commit()
             return "Produkte wurden erfolgreich im Lager hinzugefügt"
@@ -61,15 +66,15 @@ class Lagermanger:
             return "Ungültige Auswahl"
 
     def excel_erstellen(self,daten,dateiname):
-        wb = Workbook()  # Workbook= kompllte neue Exel-Datei eid erzeugzt
+        wb = Workbook()  # Workbook= kompllte neue Exel-Datei eid erzeugt
         ws = wb.active  # Aktivieren von workbook also Aktives Blatt holen
         ws.title = "Alle_Bestaende"
         # hier definieren wir den überschriften
         headers = ["Artikelnummer", "Bezeichnung", "Kategorie", "Menge", "Einheit", "Preis (€)", "Lagerort"]
         from openpyxl.styles import Font, numbers  # für Fettschrift und zahlenfaktor
         for idx, header in enumerate(headers):
-            spalte = chr(65 + idx)  # 0->A,1->B,....
-            zelle = f"{spalte}1"  # A1,B1,A2,.---
+            spalte = chr(65 + idx)  # 0->A,1->B
+            zelle = f"{spalte}1"  # A1,B1,A2
             ws[zelle].value = header  # Überschrift eintragen
             ws[zelle].font = Font(bold=True)  # Fett setzen
 
@@ -89,6 +94,7 @@ class Lagermanger:
             # Datei speichern
         wb.save(dateiname)
     def bestand_abrzufen(self):
+        #Alle Artiekl selecte und die Arteil Aufturefen
         sql="Select Artikelnummer,Bezeichnung,Kategorie,Menge,Einheit,Preis,Lagerort from Lagerbestand"
         self.cursor.execute(sql)
         daten=self.cursor.fetchall()
@@ -101,10 +107,14 @@ class Lagermanger:
         if neue_menge is None and diferenz is None:
             return False
         try:
+            # Prüft, ob eine neue Menge übergeben wurde.
+            # Falls ja, wird die Menge im Lagerbestand für die entsprechende Artikelnummer aktualisiert
             if neue_menge is not None:
                 sql="Update Lagerbestand Set Menge=%s Where Artikelnummer=%s"
                 werte=(neue_menge,artikelnummer)
             else:
+                # Falls keine neue Menge vorhanden ist, wird die aktuelle Menge im Lagerbestand
+                # um den Wert 'differenz' erhöht
                 sql=" Update Lagerbestand Set Menge=Menge+%s Where Artikelnummer=%s"
                 werte=(diferenz,artikelnummer)
             self.cursor.execute(sql,werte)
@@ -123,6 +133,7 @@ class Lagermanger:
         return daten
 
     def lagerwert_berechnen(self):
+        #lagerberecung also wert in den ERP_HTML
         sql="Select Menge, Preis from Lagerbestand"
         self.cursor.execute(sql)
         daten=self.cursor.fetchall()
@@ -133,6 +144,7 @@ class Lagermanger:
         return gesamtwert
 
     def lagerberechnung_erp(self):
+        #Lagerneberechung in der Datenbank selber
         sql=" Select Sum(Menge*Preis) from Lagerbestand"
         self.cursor.execute(sql)
         daten=self.cursor.fetchone()
@@ -150,6 +162,7 @@ class Lagermanger:
         return data
 
     def lagerwert_pro_ort(self):
+        #prüfe nach Lagerort wie viel lagerwert pro Lager ort befindent
         sql="Select Lagerort,Sum(Menge*Preis) from Lagerbestand group by Lagerort"
         self.cursor.execute(sql)
         data=self.cursor.fetchall()

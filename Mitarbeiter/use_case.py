@@ -36,7 +36,7 @@ class usermanger:
                 print("Bitte Mindesten ein großbuschtabe einfügen")
                 continue
             elif not any(c.islower() for c in passwort):
-                print("Bitte mindestens ein kleinbuchstabe himzufüggen")
+                print("Bitte mindestens ein kleinbuchstabe hinzufüggen")
                 continue
             else:
                 print("password wurde erfolgreich eingeben")

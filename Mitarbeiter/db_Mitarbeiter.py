@@ -56,6 +56,10 @@ class Datenbank:
                                 "Prioritaet Integer," # hier 1:Wichtig,2: Milltel 3:Nicht so wichtigg 
                                 "FOREIGN KEY(Maschinen_id) References prod_Maschinen(Maschinen_id),"
                                 "FOREIGN KEY(Dienstnummer) References Employers(Dienstnummer))")
+            self.cursor.execute("Create Table if not exists fehler_katalog(Fehler_ID Int auto_increment Primary key,"
+                                "Fehlercode text,"
+                                "Infor_Text Varchar(255),"
+                                "Priorität Integer(20))")
             self.connection.commit()
             print("Tabelle wurde erfolgreich hergestellt")
         except Exception as e:
