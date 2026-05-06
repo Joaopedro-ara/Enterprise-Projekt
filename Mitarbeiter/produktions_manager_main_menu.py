@@ -1,4 +1,5 @@
 from titanflow_enterprise.Mitarbeiter.Produktions_manager import produktion
+from titanflow_enterprise.Mitarbeiter.use_case import usermanger
 from datetime import datetime
 from decimal import Decimal
 while True:
@@ -6,7 +7,8 @@ while True:
     print("1: Maschine Anlegen")
     print("2: Maschinen Abrufen")
     print("3: Neuer status aendern")
-    print ("4 Benden")
+    print("4 Maschine fehler code ")
+    print ("5: Benden")
     auswahl=input("Welche von den 3 Punkte wählst du ?")
     if auswahl=="1":
         print("Maschinen eintragen")
@@ -42,8 +44,18 @@ while True:
         neuer_status=input("Neuer Status: ")
         pro=produktion()
         pro.status_aendern(maschinen_id,neuer_status)
-
     elif auswahl=="4":
+        mas=usermanger()
+        print("Fehlercode der maschine Manuell eingeben")
+        fehlercode=input("Bitte Fehlercode eingeben")
+        Infotext=input("Bitte gib den Info zu diesen fehlercode")
+        prio=int(input("Welche priorität hat die wartung 1-3 "))
+        mas.maschineerroer(fehlercode,Infotext,prio)
+
+
+
+
+    elif auswahl=="5":
         break
     else:
         print("Nur zahlen eingeben")

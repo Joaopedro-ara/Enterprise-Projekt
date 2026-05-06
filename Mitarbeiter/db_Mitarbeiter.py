@@ -60,6 +60,7 @@ class Datenbank:
                                 "Fehlercode text,"
                                 "Infor_Text Varchar(255),"
                                 "Priorität Integer(20))")
+
             self.connection.commit()
             print("Tabelle wurde erfolgreich hergestellt")
         except Exception as e:

@@ -107,6 +107,16 @@ class usermanger:
         except Exception as e:
             print("❌ Fehler beim Insert:", e)
 
+    def maschineerroer(self,fehlercode,info_text,prioritaet):
+        try:
+            sql=("Insert into fehler_katalog(Fehlercode,Infor_text,Priorität) VALUES (%s,%s,%s)")
+            val=(fehlercode,info_text,prioritaet)
+            self.cursor.execute(sql,val)
+            self.db.connection.commit()
+            return "Fehlereientag wurde erfolgreich in die Datenbank aufgenommen"
+        except Exception as e:
+            print("Fehler beim Insert:", e)
+
 
 
 

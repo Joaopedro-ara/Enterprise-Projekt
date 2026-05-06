@@ -41,6 +41,12 @@ class produktion:
             self.db.connection.commit()
             return "Update Status erfolgreich"
 
+    def zufalls_fehler_abrufen(self):
+        sql="Select Fehlercode,Infor_Text,Priorität From fehler_katalog ORDER BY  RAND() LIMIT 1"
+        self.cursor.execute(sql)
+        return self.cursor.fetchone()
+
+
 
 
 
