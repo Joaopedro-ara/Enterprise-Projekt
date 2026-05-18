@@ -27,7 +27,7 @@
         <p class="info">Willkommen zurück.<br>Ihre Mitarbeiter-ID: <strong>{{ nutzer_id }}</strong></p>
         <p class="info">Ihre Rolle: <strong>{{ nutzer_Rolle }}</strong></p>
 
-        {% if nutzer_Rolle in ['Lagermanager', 'Lagerarbeiter', 'Schichtleiter'] %}
+        {% if nutzer_Rolle in ['Lagermanager', 'Lagerarbeiter', 'Lagerschichtleiter'] %}
             <a class="button lager" href="/lager">Lagerverwaltung öffnen</a>
         {% endif %}
 

@@ -37,6 +37,7 @@ def maschine_anlegen():
         prod.Maschine_anlegen(Maschinen_id,bezeichnung,kat,Letze_wartung,naechste_wartung,prod_ort,halle,status)
         return redirect(url_for('produktion.prod_dash'))
 @produktion_bp.route("/api/maschinen_status")
+#polter_geist
 def api_maschinen_status():
     maschinen_liste=[] # Wor wir die Maschinen_ Informationen sopeichern
     aktuele_daten= prod.maschinen_abrufen() # hier werden die Aktuelnen dtaen der maschine aufgerufen
@@ -49,10 +50,20 @@ def api_maschinen_status():
             zufall=random.randint(1,100)
             if zufall <=5:
                 prod.status_aendern( maschinen_id,"Störung")
+                zufals_fehler=prod.zufalls_fehler_abrufen()
+                fehlercode=zufals_fehler[0]
+                info_text=zufals_fehler[1]
+                prio=zufals_fehler[2]
+                prod.logbuch_eintrag(maschinen_id,fehlercode,info_text,prio)
         elif Status=="Störung":
             zufall=random.randint(1,100)
             if zufall<=10:
                 prod.status_aendern(maschinen_id, "Defekt")
+                zufals_fehler = prod.zufalls_fehler_abrufen()
+                fehlercode = zufals_fehler[0]
+                info_text = zufals_fehler[1]
+                prio = zufals_fehler[2]
+                prod.logbuch_eintrag(maschinen_id, fehlercode, info_text, prio)
         elif Status=="Wartung":
             zufall=random.randint(1,100)
             if zufall<=20: #in jeden takt gibnbt es eine 20% chance, dass die wartung fertig ist
@@ -61,6 +72,7 @@ def api_maschinen_status():
             zufall=random.randint(1,100)
             if zufall <=70:
                 prod.status_aendern(maschinen_id, "Aktiv")
+                prod.logbuch_eintrag_abschliessen(maschinen_id)
             elif zufall >=71 and zufall<=85:
                 prod.status_aendern(maschinen_id, "Störung")
             else:
