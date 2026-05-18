@@ -47,7 +47,7 @@ class produktion:
         return self.cursor.fetchone()
     def logbuch_eintrag(self,maschinen_id,fehlercode,info_text,prio):
        #hier ist die Funktion um die werte in den Maschinen logbuch einzutragen
-       sql=("Insert into maschinen_logbuch (Maschinen_id,Fehlercode,Infor_Fehler,Datum,Dauer_in_min,Status,Dienstnummer,"
+       sql=("Insert into maschinen_logbuch (Maschinen_id,Fehlercode,Info_Fehler,Datum,Dauer_in_min,Status,Dienstnummer,"
             "Prioritaet) Values (%s,%s,%s,%s,%s,%s,%s,%s)" )
        status = "offen"
        datum = datetime.now()
@@ -69,11 +69,11 @@ class produktion:
             print("Fehler beim Insert:", e)
     def logbuch_eintrag_abschliessen(self,maschinen_id):
         # Findet das offene Ticket der Maschine und setzt den Status von 'offen' auf 'gelöst'.
-        sql= ("Update maschinen_logbuch"
+        sql= ("Update maschinen_logbuch "
               "Set status='Gelöst' "
               "Where maschinen_id=%s "
               "AND Status='offen'")
-        self.cursor.execute(sql,maschinen_id)
+        self.cursor.execute(sql,(maschinen_id))
         #führt den sql befehl aus und {suche den platzhalte:maschine--id und ersterte den wert der phxthon variable maschinen_id}
         #sql = "WHERE maschinen_id = :maschinen_id" ->cursor.execute(sql, {"maschinen_id": maschinen_id})
 
