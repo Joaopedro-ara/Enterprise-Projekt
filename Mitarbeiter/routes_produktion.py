@@ -1,8 +1,11 @@
 #Hoier machen wir die Blueflask für die prodution damit wir später in der app.py benutzen können
-from flask import render_template,request,redirect,url_for,session, Blueprint,jsonify
+from flask import render_template,request,redirect,url_for,session, Blueprint,jsonify,send_file
 #Ein blueprint ist ähnlich wie eine Mehrfachsteckdoese wo wir unseren viel stecker hinzufügen können
 from titanflow_enterprise.Mitarbeiter.Produktions_manager import produktion
 import random
+import pandas as pd
+from io import BytesIO
+# io stellt speicher daten bereit und bytes um binärdaten direkt im Ram zu lesen
 
 produktion_bp=Blueprint('produktion',__name__)
 prod=produktion()
@@ -108,5 +111,16 @@ def maschinen_fehler_eintraege():
         logs=prod.alle_logs_abrufen() # daten holen und speichern
     return render_template('Produktions_templates/maschinen_logbuch.html',logs=logs)
 
-
+@produktion_bp.route('/api/maschinen_logbuch/export',methods=["GET","POST"])
+def maschinen_logbuch_export():
+    #Rollenschutz gewähren
+    if 'nutzer_id' not in session:
+        return redirect(url_for('index'))
+    aktuelle_rolle=session.get("rolle")
+    produktions_rolle=["Produktionsschichtleiter", "Produktionsleiter", "Werksleiter"]
+    if aktuelle_rolle not in produktions_rolle:
+        return redirect(url_for('dashboards'))
+    else:
+        log=prod.alle_logs_abrufen()
+        pass
 
