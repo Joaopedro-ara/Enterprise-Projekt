@@ -73,12 +73,16 @@ class produktion:
               "Set status='Gelöst' "
               "Where maschinen_id=%s "
               "AND Status='offen'")
-        self.cursor.execute(sql,(maschinen_id))
+        self.cursor.execute(sql,(maschinen_id,))
         #führt den sql befehl aus und {suche den platzhalte:maschine--id und ersterte den wert der phxthon variable maschinen_id}
         #sql = "WHERE maschinen_id = :maschinen_id" ->cursor.execute(sql, {"maschinen_id": maschinen_id})
-
         self.db.connection.commit()
 
+    def alle_logs_abrufen(self):
+        # Lese werkzeug das er alles daten aus den maschienen_logbuch holt und dann nach datum ordert
+        sql="Select * from maschinen_logbuch Order BY Datum DESC "
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
 
 
 

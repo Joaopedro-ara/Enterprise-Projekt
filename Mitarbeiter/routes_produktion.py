@@ -95,6 +95,18 @@ def reparieren(maschinen_id):
     if not maschinen_id:
         return jsonify({"status":"fehler"}),400
     return jsonify({"status":"erfolg"})
+@produktion_bp.route('/api/maschinen_logbuch',methods=["GET","POST"])
+def maschinen_fehler_eintraege():
+    # die  Rollenschutz
+    if 'nutzer_id' not in session:
+        return redirect(url_for('index'))
+    aktuelle_rolle = session.get("rolle")
+    produktion_rolle = ["Produktionsschichtleiter", "Produktionsleiter", "Werksleiter"]
+    if aktuelle_rolle not in produktion_rolle:
+        return redirect(url_for('dashboards'))
+    else:
+        logs=prod.alle_logs_abrufen() # daten holen und speichern
+    return render_template('Produktions_templates/maschinen_logbuch.html',logs=logs)
 
 
 
