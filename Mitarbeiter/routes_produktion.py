@@ -1,4 +1,6 @@
 #Hoier machen wir die Blueflask für die prodution damit wir später in der app.py benutzen können
+import io
+
 from flask import render_template,request,redirect,url_for,session, Blueprint,jsonify,send_file
 #Ein blueprint ist ähnlich wie eine Mehrfachsteckdoese wo wir unseren viel stecker hinzufügen können
 from titanflow_enterprise.Mitarbeiter.Produktions_manager import produktion
@@ -121,6 +123,45 @@ def maschinen_logbuch_export():
     if aktuelle_rolle not in produktions_rolle:
         return redirect(url_for('dashboards'))
     else:
-        log=prod.alle_logs_abrufen()
-        pass
+        log=prod.alle_logs_abrufen() # hier speichen wir die funktion ind die  variable log
+        ## als nächste machen wir eine pd-datframe datei wo wir den log variable übergeben
+        #und damit pandas die colums weißt geben wir die colums pandas wo wir die sachen abspeichern die atribute in den colums
+        df=pd.DataFrame(log,
+                        columns=["Log-ID","Maschinen-ID","Fehler_code","Info_fehler","Datum","Dauer_in_Min","Status",
+                                "Mitarbeiter","Priorität"])
+        excsel_speicher=io.BytesIO() #hier senden wir die dateien direk in den browser das heißt date in Ram
+        df.to_excel(excsel_speicher,index=False)# index =false damit pandas nicht ungefragt mit forlaufende nummer links einfügt
+        excsel_speicher.seek(0)
+        # .seek(0) setzt den Dateizeiger wieder an den Anfang, damit die Datei vollständig gelesen werden kann
+    return  send_file(excsel_speicher,mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                      as_attachment=True,download_name="maschinen_fehler_historie.xlsx")
+#return send file ans den ram  mit minetype=... ,sagen wir das es um eine excsel datei handelt mit den ofziellen excel wert
+#mit as_attachment=true sagen wir das er die datei downloaddet mit den dateiname=maschnen...
+
+
+#Apri route für den bar chart
+@produktion_bp.route('/api/maschinen_logbuch/chart_daten', methods=["GET","POST"])
+def chart_daten():
+    # Rollenschutz gewähren
+    if 'nutzer_id' not in session:
+        return redirect(url_for('index'))
+    aktuelle_rolle = session.get("rolle")
+    produktions_rolle = ["Produktionsschichtleiter", "Produktionsleiter", "Werksleiter"]
+    if aktuelle_rolle not in produktions_rolle:
+        return redirect(url_for('dashboards'))
+    else:
+        roh_daten=prod.excse_barcharts_maschine_logbuch()
+        maschinen_ids=[]
+        ausfall_anzahl=[]
+        for daten in roh_daten:
+            maschine=daten[0]
+            ausfall=daten[1]
+            maschinen_ids.append(maschine)
+            ausfall_anzahl.append(ausfall)
+
+        chart_paket = {
+            "Maschinen_id": maschinen_ids,
+            "Ausfall": ausfall_anzahl
+        }
+    return jsonify(chart_paket)
 

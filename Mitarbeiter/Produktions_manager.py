@@ -84,6 +84,13 @@ class produktion:
         self.cursor.execute(sql)
         return self.cursor.fetchall()
 
+    def excse_barcharts_maschine_logbuch(self):  # def für die bar chart fumnktion
+        sql="Select Maschinen_id, count(*) from maschinen_logbuch group by  Maschinen_id"
+        #Abfragen der tabele maschine logbuch nach der maschinen id und sie mit count zählen mit groupy by weißt es das es bei jede maschine zählen soll
+        self.cursor.execute(sql)
+        result=self.cursor.fetchall()
+        return result
+
 
 
 

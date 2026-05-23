@@ -136,7 +136,7 @@
 
 
                         });
-                },500000)
+                },3000)
                 function Reparieren(maschinen_id){ // hier verbinden den button mit der Api route
                  fetch('/api/reparieren/'+maschinen_id,{method:'POST'})
                      .then(response => Response.json()).then(data=>{
