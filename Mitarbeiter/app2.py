@@ -3,6 +3,8 @@ from use_case import usermanger
 from Lager_manager import Lagermanger
 from routes_produktion import produktion_bp
 
+
+
 app=Flask(__name__)
 app.secret_key="Hilde-super-geheim-2026"
 app.register_blueprint(produktion_bp)
