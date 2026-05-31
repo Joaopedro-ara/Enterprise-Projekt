@@ -1,7 +1,7 @@
 from flask import Flask,render_template,request,redirect,url_for,session,send_file
-from use_case import usermanger
-from Lager_manager import Lagermanger
-from routes_produktion import produktion_bp
+from titanflow_enterprise.Mitarbeiter.use_case import usermanger
+from titanflow_enterprise.Mitarbeiter.Lager_manager import Lagermanger
+from titanflow_enterprise.Mitarbeiter.routes_produktion import produktion_bp
 
 
 
