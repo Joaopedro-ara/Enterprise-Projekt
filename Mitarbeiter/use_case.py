@@ -42,6 +42,9 @@ class usermanger:
                 print("password wurde erfolgreich eingeben")
                 break
         password_hash = bcrypt.hashpw(passwort.encode("utf-8"), bcrypt.gensalt())
+        # bcryp macht aus  buchstaben eine unselbare zeichenreihen das es dafür sorgt das das password niemals errechent wird
+        #bcrypt.gensalt()-> bedeutet wenn zwei leute das selbe password haben können ,ohne das ein Angreifer halt einmal knackt und zwei passworder hat
+
         vorname=input("Wie ist ihrer Vorname: ")
         nachname=input("Wie ist Ihrer Nachname: ")
         rolle=input("Iwe ist Ihrer Rolle des Unternehmens: ")
