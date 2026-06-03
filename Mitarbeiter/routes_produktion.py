@@ -11,6 +11,7 @@ from io import BytesIO
 
 produktion_bp=Blueprint('produktion',__name__)
 prod=produktion()
+
 @produktion_bp.route('/produktion_dashboard')
 def prod_dash():
 
@@ -44,6 +45,8 @@ def maschine_anlegen():
 @produktion_bp.route("/api/maschinen_status")
 #polter_geist
 def api_maschinen_status():
+    if 'nutzer_id' not in session:
+        return redirect(url_for('index'))
     maschinen_liste=[] # Wor wir die Maschinen_ Informationen sopeichern
     aktuele_daten= prod.maschinen_abrufen() # hier werden die Aktuelnen dtaen der maschine aufgerufen
     maschinen_liste=aktuele_daten #hier geben wir direkt die Daten ein.

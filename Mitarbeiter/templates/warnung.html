@@ -91,6 +91,7 @@
     <div class="card">
         <h1> Bestandwarnung</h1>
         <form action="{{ url_for('warnungen') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <label for="kritischerwert">Kritischerwert</label>
             <input type="number" id="Kritischerwert" name="limit" required>
 

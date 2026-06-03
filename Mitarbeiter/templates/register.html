@@ -121,6 +121,7 @@ Hilde AG – ERP System
 <p>Erstellen Sie ein neues Mitarbeiterprofil für den Lagerbereich.</p>
 
 <form action="/register" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
 <label for="mitarbeiter_id">Mitarbeiter ID</label>
 <input type="text" id="mitarbeiter_id" name="mitarbeiter_id" required>

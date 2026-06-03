@@ -122,6 +122,7 @@ Hilde AG – ERP System
 <p>Bitte melden Sie sich mit Ihrer Mitarbeiter-ID und Ihrem Passwort an.</p>
 
 <form action="/login" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
 <label for="username">Mitarbeiter-ID</label>
 <input type="text" id="mitarbeiter_id" name="mitarbeiter_id" required>

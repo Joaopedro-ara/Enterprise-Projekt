@@ -91,6 +91,7 @@
     <div class="card">
         <h1> Artikel im Lagerbestand anlegen</h1>
         <form action="{{ url_for('artikel_anlegen') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
             <label for="Artikelnummer">Artikelnummer</label>
             <input type="Text" id="Artikelnummer" name="Artikelnummer" required>
 

@@ -2,13 +2,15 @@ from flask import Flask,render_template,request,redirect,url_for,session,send_fi
 from titanflow_enterprise.Mitarbeiter.use_case import usermanger
 from titanflow_enterprise.Mitarbeiter.Lager_manager import Lagermanger
 from titanflow_enterprise.Mitarbeiter.routes_produktion import produktion_bp
+import os
 from flask_wtf.csrf import CSRFProtect # CSRF (Cross-Site Request Forgery) # vor externen eingriffe schützen
 #also es blockiert jede Post Anfrage die an den routen geschickt werden
 
 app=Flask(__name__)
-csrf=CSRFProtect(app)
-app.secret_key="Hilde-super-geheim-2026"
+csrf_token=CSRFProtect(app)
+app.secret_key=os.environ.get("app_secret_key")
 app.register_blueprint(produktion_bp)
+csrf_token.exempt(produktion_bp)
 manger=usermanger()
 Lager=Lagermanger()
 

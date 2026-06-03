@@ -19,6 +19,7 @@
     <h1>Produktionsmaschine anlegen</h1>
 
     <form action="{{ url_for('produktion.maschine_anlegen') }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="Maschinen-Id">Maschinen-Id</label>
         <input type="text" id="Maschinen-Id" name="Maschinen-Id" required>
 

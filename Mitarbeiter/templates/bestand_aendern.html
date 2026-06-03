@@ -91,6 +91,7 @@
     <div class="card">
     <h1> Artikel bestand ändern</h1>
      <form action="{{ url_for('artikel_aendern') }}" method="POST">
+         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <label for="Artikelnummer">Artikelnummer</label>
             <input type="Text" id="Artikelnummer" name="Artikelnummer" required>
 

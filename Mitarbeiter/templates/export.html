@@ -92,6 +92,7 @@
     <div class="Dropdown">
         <h1>Lagerdaten ins excel Files downloading</h1>
         <form action="{{ url_for('excel_export') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <label>Was möchstest du Exportieren? </label>
             <select name="Export-Art">
                 <option value="alle">Alle Daten</option>
