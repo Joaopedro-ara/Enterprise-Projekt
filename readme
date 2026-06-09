@@ -1,0 +1,28 @@
+
+
+Ein modulares Enterprise Resource Planning (ERP) System, entwickelt zur Optimierung und Verwaltung komplexer Geschäftsprozesse, inspiriert durch industrielle Standards wie bei Mittelständische Unternehmen
+
+
+Dieses Projekt dient als technisches Fundament für die Abbildung betriebswirtschaftlicher Abläufe. Ziel ist es, ein skalierbares System zu schaffen, das Datenstrukturen (SQL) mit einer benutzerfreundlichen Oberfläche (HTML/Python) verbindet.
+Um einen Optimalen ganzzeitlichen informationsrahmen über alle Abteilungen zuschaffen,
+
+Funktionen:
+- Mitarbeiterverwaltung: Erfassung und Organisation von Personalstammdaten.(Später)
+-Lagerverwaltung sowie produktionsverwaltung: Erfassung des lager und deren Wert und erfassung von maschinen und auch deren Fehler
+- Datenbank-Integration: Strukturierte Speicherung von Unternehmensdaten.
+- Modulare Architektur: Fokus auf Erweiterbarkeit für zukünftige Geschäftsbereiche.
+
+Technologie:
+- Sprache: Python
+- Frontend:HTML5
+- Datenbank: MySQL
+- Versionsverwaltung:Git & GitHub
+
+## Installation
+Um das Projekt lokal zu nutzen:
+1. Repository klonen: Bitte nachfragen erst.
+2. Abhängigkeiten installieren: `pip install -r requirements.txt`
+3. Programm starten: `python main.py`
+
+Screnshorts
+-zu gegeben zeit
