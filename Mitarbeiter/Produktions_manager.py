@@ -58,7 +58,7 @@ class produktion:
        self.db.connection.commit()
 
     def maschineerroer(self,fehlercode,info_text,prioritaet):
-        #Hier ist die funktion wo wir
+        #
         try:
             sql=("Insert into fehler_katalog(Fehlercode,Infor_text,Priorität) VALUES (%s,%s,%s)")
             val=(fehlercode,info_text,prioritaet)
