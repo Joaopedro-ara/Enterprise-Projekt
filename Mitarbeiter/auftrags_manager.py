@@ -4,11 +4,12 @@ from flask import render_template,request,redirect,url_for,session, Blueprint,js
 import random
 import pandas as pd
 import mysql.connector
+from titanflow_enterprise.Mitarbeiter.db_Mitarbeiter import Datenbank
 
 class AuftragsManager:
-    def __init__(self,db_connection):
-        self.db=db_connection
-        self.cursor = db_connection.cursor()
+    def __init__(self):
+        self.db=Datenbank()
+        self.cursor =self.db.cursor
 
     def kundenauftrag_anlegen(self,kundenauftrag_id,kunde_name,produkt_id,menge,liefertermin,priorität,status,
                               werk_id,ersteelungsdatum):

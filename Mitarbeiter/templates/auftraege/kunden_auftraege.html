@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>kunden Auftraege anlegen</title>
+        <style>
+    body {
+        min-height: 100vh;
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f3f4f6;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .header {
+        background: #1f2d3d;
+        color: white;
+        padding: 20px 40px;
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 40px;
+    }
+
+    .card {
+        background: white;
+        padding: 30px;
+        width: 520px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        border: 1px solid #e5e7eb;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card h1 {
+        font-size: 26px;
+        margin-bottom: 20px;
+        color: #1f2d3d;
+        text-align: center;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    label {
+        font-weight: 600;
+        color: #374151;
+        font-size: 14px;
+    }
+
+    input, select {
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #cbd5e1;
+        font-size: 15px;
+        background: #f9fafb;
+        transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: #2563eb;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    button {
+        margin-top: 20px;
+        padding: 14px;
+        border: none;
+        border-radius: 8px;
+        background: #2563eb;
+        color: white;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    button:hover {
+        background: #1e4fd1;
+        transform: translateY(-1px);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 13px;
+        color: #6b7280;
+        margin-top: 20px;
+    }
+</style>
+
+</head>
+<body>
+<div class="header">
+    Hilde AG-ERP System
+</div>
+<div class ='main'>
+    <div class="card">
+        <h1> Kundenaufträge anlegen</h1>
+        <form action="{{ url_for('auftrag.auftrag_anlegen') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
+            <label for="k_id">Kundenauftrag_id</label>
+            <input type="Text" id="k_id" name="kundenauftrag_id" required>
+
+            <label for="k_name">Kundenname</label>
+            <input type="Text" id="k_name" name="kunde_name" required>
+
+            <label for="p_id">Zu produzierenden Produkt_id</label>
+            <input type="Text" id="p_id" name="produkt_id" required>
+
+            <label for="Menge">Menge( Wie viel von den produkt produzieren wir) </label>
+            <input type="number" id="Menge" name="menge" required>
+
+            <label for="Liefertermin">Liefertermin des produktes</label>
+            <input type="date" id="Liefertermin" name="liefertermin" required>
+
+            <label for="prio">Priorität des Produktes</label>
+            <select id="prio" name="'priorität" required>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+
+            </select>
+
+            <label for="Status">Status </label>
+            <select id="Status" name="status" required>
+            <option value="Eingegangen">Eingegangen</option>
+            <option value="in Planung">In Planung</option>
+            <option value="Freigegeben">Freigegeben</option>
+            <option value="In Produktion">In Produktion</option>
+            <option value="Fertig">Fertig</option>
+            <option value="Storniert">Storniert</option>
+            </select>
+            <label for="W_id">Werk_id</label>
+            <input type="text" id="w_id" name="werk_id" required>
+
+            <label for="datum">Datum wann der Auftrag hergestellt wurde</label>
+            <input type="date" id="datum" name="ersteelungsdatum" required>
+            <button type="submit">Artikel speichern</button>
+        </form>
+        <div class="footer">
+            ERP Artikelanlegen. Hilde AG
+        </div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+</html>

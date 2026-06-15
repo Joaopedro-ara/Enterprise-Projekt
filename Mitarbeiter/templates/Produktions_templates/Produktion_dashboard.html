@@ -23,6 +23,10 @@
             <a href="{{ url_for('produktion.maschine_anlegen') }}">Maschinen Anlegen</a>
         <a href="{{ url_for('produktion.maschinen_fehler_eintraege') }}">Fehler-Logbuch anzeigen</a>
         {% endif %}
+        {% if nutzer_Rolle in ['Produktionsleiter', 'Werksleiter'] %}
+        <a href="{{ url_for('auftrag.auftrag_anlegen')}}" class="btn">Auftragszentrale</a>
+        {% endif %}
+
         <a href="/dashboard">Zurück zum Dashboard</a>
     </div>
 
