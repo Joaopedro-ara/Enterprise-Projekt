@@ -1,3 +1,5 @@
+import random
+
 from titanflow_enterprise.Mitarbeiter.db_Mitarbeiter import Datenbank
 from datetime import datetime
 
@@ -51,7 +53,12 @@ class produktion:
             "Prioritaet) Values (%s,%s,%s,%s,%s,%s,%s,%s)" )
        status = "offen"
        datum = datetime.now()
-       dauer_min = 0
+       if prio==1:
+        dauer_min = random.randint(60,240)
+       elif prio==2:
+        dauer_min=random.randint(20,60)
+       else:
+           dauer_min=random.randint(5,15)
        dienstnummer = None
        val=(maschinen_id,fehlercode,info_text,datum,dauer_min,status,dienstnummer,prio)
        self.cursor.execute(sql,val)
@@ -91,7 +98,8 @@ class produktion:
         result=self.cursor.fetchall()
         return result
 
-
+    def production_manager(self):
+        sql="Select "
 
 
 

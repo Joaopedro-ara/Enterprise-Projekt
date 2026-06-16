@@ -168,3 +168,9 @@ def chart_daten():
         }
     return jsonify(chart_paket)
 
+#@produktion_bp.route('/api/prediction_manager',methods=["GET","POST"])
+#def PredictionManager():
+
+
+
+
