@@ -54,11 +54,12 @@ class produktion:
        status = "offen"
        datum = datetime.now()
        if prio==1:
-        dauer_min = random.randint(60,240)
+        dauer_min = random.randint(60,540)
        elif prio==2:
         dauer_min=random.randint(20,60)
        else:
            dauer_min=random.randint(5,15)
+
        dienstnummer = None
        val=(maschinen_id,fehlercode,info_text,datum,dauer_min,status,dienstnummer,prio)
        self.cursor.execute(sql,val)
