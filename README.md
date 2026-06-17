@@ -1,14 +1,14 @@
-# G-INOS – Global Integrated Neural Operating System 🦅
+# G-INOS – Global Integrated Neural Operating System 
 
 G-INOS ist ein hochmodernes, modulares Enterprise Resource Planning (ERP) System und Produktionsplanungs- und -steuerungssystem (PPS), entwickelt auf Basis von **Python**, **Flask** und **MySQL**. Das System ist speziell für die verarbeitende Industrie (Hilde AG) konzipiert und implementiert eine strikte rollenbasierte Zugriffskontrolle (RBAC) für maximale Betriebssicherheit.
 
 ---
 
-## 🚀 Aktueller Entwicklungsstand & Features
+##  Aktueller Entwicklungsstand & Features
 
 Das System befindet sich in der aktiven Entwicklung und deckt bereits die zentralen operativen Säulen eines modernen Industriebetriebs ab:
 
-### 1. 👥 Personal- & Sicherheitsmanagement (`Employers`)
+### 1.  Personal- & Sicherheitsmanagement (`Employers`)
 * Sichere Benutzerregistrierung und verschlüsseltes Login-Verfahren.
 * Rollenbasierter Zugriffsschutz (Werksleiter, Produktionsleiter, Produktionsschichtleiter, Produktionsarbeiter).
 
