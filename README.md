@@ -39,7 +39,7 @@ Hier wurde das Fundament für ein echtes **Predictive Maintenance Modul (Vorauss
 
 ---
 
-## 🛠️ Tech-Stack
+##  Tech-Stack
 
 * **Backend:** Python 3.x, Flask (Blueprints), MySQL Connector
 * **Data Science & ML:** Pandas, Scikit-Learn (LinearRegression)
