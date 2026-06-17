@@ -99,9 +99,6 @@ class produktion:
         result=self.cursor.fetchall()
         return result
 
-    def production_manager(self):
-        sql="Select "
-
 
 
 

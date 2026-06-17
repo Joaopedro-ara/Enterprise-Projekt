@@ -23,3 +23,8 @@ class AuftragsManager:
         except Exception as e:
             self.db.connection.rollback()  # macht änderung rückgängig
             return f"Fehler beim Einfügen der Daten: {e}"
+
+    def alles_auftraege_anzeigen(self):
+        sql=("Select *From Kunden_auftraege")
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
