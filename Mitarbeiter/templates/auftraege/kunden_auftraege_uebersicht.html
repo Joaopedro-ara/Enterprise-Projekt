@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kundenaufträge Übersicht</title>
+    <style>
+        /* --- Reset & Grundlayout --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #f3f4f6;
+            min-height: 100vh;
+        }
+
+        /* --- Container mit Sidebar --- */
+        .container {
+            display: flex;
+            flex-direction: row;
+            min-height: calc(100vh - 60px);
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 280px;
+            background: #1f2d3d;
+            color: white;
+            padding: 25px 20px;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .sidebar h3 {
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8b9cb0;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar hr {
+            border: none;
+            border-top: 1px solid #34495e;
+            margin: 12px 0;
+        }
+
+        /* --- Sidebar Buttons wie auf dem Bild (Bestand Anzeigen, Maschinen Anlegen etc.) --- */
+        .sidebar .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            background: transparent;
+            color: #d0d9e6;
+            padding: 12px 16px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            transition: background 0.2s ease, color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .sidebar .nav-btn:hover {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .sidebar .nav-btn i {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* --- Hervorhebung für "Neuer Auftrag anlegen" (Primary Button) --- */
+        .sidebar .btn-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            padding: 14px 18px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            transition: background 0.2s ease, transform 0.15s ease;
+            cursor: pointer;
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+
+        .sidebar .btn-primary:hover {
+            background: #1e4fd1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        .sidebar .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* --- Icon Platzhalter (ohne externe Icons) --- */
+        .sidebar .nav-btn .icon {
+            display: inline-block;
+            width: 24px;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        /* --- Content Bereich --- */
+        .content-area {
+            flex: 1;
+            padding: 30px 35px;
+            background: #f3f4f6;
+            overflow-x: auto;
+        }
+
+        .content-area h2 {
+            font-size: 24px;
+            color: #1f2d3d;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        /* --- ERP Tabelle --- */
+        .erp-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .erp-table thead {
+            background: #1f2d3d;
+            color: white;
+        }
+
+        .erp-table th {
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        .erp-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e9edf2;
+            font-size: 14px;
+            color: #1f2d3d;
+        }
+
+        .erp-table tbody tr:hover {
+            background: #f0f4fa;
+        }
+
+        .erp-table tbody tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .erp-table tbody tr:nth-child(even):hover {
+            background: #f0f4fa;
+        }
+
+        /* --- Status Badges (optional, für bessere Lesbarkeit) --- */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.offen { background: #fef3c7; color: #92400e; }
+        .status-badge.in-produktion { background: #dbeafe; color: #1e40af; }
+        .status-badge.fertig { background: #d1fae5; color: #065f46; }
+        .status-badge.storniert { background: #fee2e2; color: #991b1b; }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 15px 20px;
+                gap: 6px;
+            }
+            .sidebar h3 {
+                width: 100%;
+                margin-bottom: 4px;
+            }
+            .sidebar .nav-btn,
+            .sidebar .btn-primary {
+                width: auto;
+                flex: 1 1 auto;
+                min-width: 140px;
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+            .sidebar hr {
+                display: none;
+            }
+            .content-area {
+                padding: 20px;
+            }
+            .erp-table th,
+            .erp-table td {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar .nav-btn,
+            .sidebar .btn-primary {
+                min-width: 100%;
+                font-size: 13px;
+                padding: 10px 12px;
+            }
+            .content-area h2 {
+                font-size: 20px;
+            }
+            .erp-table {
+                font-size: 12px;
+            }
+            .erp-table th,
+            .erp-table td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>📋 Aktionen</h3>
+
+        <!-- NEUER AUFTRAG ANLEGEN - Hervorgehobener Button -->
+        <a href="{{ url_for('auftrag.auftrag_anlegen', aktion='neu') }}" class="btn-primary">
+
+            ➕ Neuer Auftrag anlegen
+        </a>
+
+
+
+        <hr>
+
+        <h3>📂 Navigation</h3>
+
+        <!-- Weitere Buttons wie auf dem Bild -->
+        <a href="#" class="nav-btn">
+            <span class="icon">📋</span>
+        </a>
+        <a href="#" class="nav-btn">
+            <span class="icon">⚙️</span>
+        </a>
+        <a href="#" class="nav-btn">
+            <span class="icon">📊</span>
+        </a>
+        <a href="#" class="nav-btn">
+            <span class="icon">📦</span>
+        </a>
+
+        <hr>
+
+        <a href="{{ url_for('dashboards') }}" class="nav-btn" style="margin-top: auto;">
+            <span class="icon">⬅️</span> Zurück zum Dashboard
+        </a>
+    </div>
+
+    <!-- Content -->
+    <div class="content-area">
+        <h2>📋 Aktive Kundenaufträge</h2>
+        {% if meldung %}
+        <div style="background-color: #3b82f6; color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: 600;">
+            System-Info: {{ meldung }}
+        </div>
+    {% endif %}
+
+        <table class="erp-table">
+            <thead>
+            <tr>
+                <th>Auftrags-ID</th>
+                <th>Kunde</th>
+                <th>Produkt-ID</th>
+                <th>Menge</th>
+                <th>Liefertermin</th>
+                <th>Priorität</th>
+                <th>Status</th>
+                <th>Werk-ID</th>
+                <th>Datum</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for auftrag in auftraege %}
+            <tr>
+                <td><strong>{{ auftrag[1] }}</strong></td>
+                <td>{{ auftrag[2] }}</td>
+                <td>{{ auftrag[3] }}</td>
+                <td>{{ auftrag[4] }}</td>
+                <td>{{ auftrag[5] }}</td>
+                <td>
+                    {% if auftrag[6] == 'A' %}
+                        <span style="color:#dc2626; font-weight:700;">A</span>
+                    {% elif auftrag[6] == 'B' %}
+                        <span style="color:#f59e0b; font-weight:700;">B</span>
+                    {% else %}
+                        <span style="color:#10b981; font-weight:700;">C</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="status-badge
+                        {% if auftrag[7] == 'Eingegangen' %}offen
+                        {% elif auftrag[7] == 'In Produktion' %}in-produktion
+                        {% elif auftrag[7] == 'Fertig' %}fertig
+                        {% elif auftrag[7] == 'Storniert' %}storniert
+                        {% else %}offen{% endif %}">
+                        {{ auftrag[7] }}
+                    </span>
+                </td>
+                <td>{{ auftrag[8] }}</td>
+                <td>{{ auftrag[9] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

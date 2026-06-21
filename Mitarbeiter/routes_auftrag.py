@@ -19,8 +19,11 @@ def auftrag_anlegen():
     if aktuelle_rolle not in produktion_rolle:
         return redirect(url_for('dashboards'))
     if request.method=="GET":
+        #wenn der nutze den formuler sehen will
+        if request.args.get('aktion')=='neu':
+            return render_template('auftraege/kunden_auftraege.html')
         daten=auf.alles_auftraege_anzeigen()
-        return render_template('auftraege/kunden_auftraege.html',auftraege=daten)
+        return render_template('auftraege/kunden_auftraege_uebersicht.html',auftraege=daten)
     if request.method=="POST":
         try:
             k_id=request.form.get('kundenauftrag_id')
@@ -28,12 +31,12 @@ def auftrag_anlegen():
             p_id=request.form.get('produkt_id')
             meng=request.form.get('menge')
             liefer_ter=request.form.get('liefertermin')
-            prio=request.form.get('priorität')
+            prioritaet=request.form.get('prioritaet')
             status=request.form.get('status')
             werk_id=request.form.get('werk_id')
             datum=request.form.get('ersteelungsdatum')
-            ergebnis=auf.kundenauftrag_anlegen(k_id,k_name,p_id,meng,liefer_ter,prio,status,werk_id,datum)
+            ergebnis=auf.kundenauftrag_anlegen(k_id,k_name,p_id,meng,liefer_ter, prioritaet,status,werk_id,datum)
             daten=auf.alles_auftraege_anzeigen()
-            return render_template('auftraege/kunden_auftraege.html',meldung=ergebnis,auftraege=daten)
+            return render_template('auftraege/kunden_auftraege_uebersicht.html',meldung=ergebnis,auftraege=daten)
         except Exception as e:
             print(f" datenbank fehler {e}")

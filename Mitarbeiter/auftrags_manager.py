@@ -11,12 +11,12 @@ class AuftragsManager:
         self.db=Datenbank()
         self.cursor =self.db.cursor
 
-    def kundenauftrag_anlegen(self,kundenauftrag_id,kunde_name,produkt_id,menge,liefertermin,priorität,status,
+    def kundenauftrag_anlegen(self,kundenauftrag_id,kunde_name,produkt_id,menge,liefertermin,prioritaet,status,
                               werk_id,ersteelungsdatum):
         try:
             sql=("Insert into Kunden_auftraege(Kundenauftrag_id,Kunde_Name,Produkt_id,MENGE,Liefertermin,"
                  "Priorität,Status,werk_id,Erstellungsdatum) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)")
-            val=(kundenauftrag_id,kunde_name,produkt_id,menge,liefertermin,priorität,status,werk_id,ersteelungsdatum)
+            val=(kundenauftrag_id,kunde_name,produkt_id,menge,liefertermin,prioritaet,status,werk_id,ersteelungsdatum)
             self.cursor.execute(sql,val)
             self.db.connection.commit()
             return "Daten erfolgreich in die Tabelle eingefügt"
