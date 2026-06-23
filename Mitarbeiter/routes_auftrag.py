@@ -40,3 +40,4 @@ def auftrag_anlegen():
             return render_template('auftraege/kunden_auftraege_uebersicht.html',meldung=ergebnis,auftraege=daten)
         except Exception as e:
             print(f" datenbank fehler {e}")
+

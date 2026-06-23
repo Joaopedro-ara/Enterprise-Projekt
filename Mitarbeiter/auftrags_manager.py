@@ -28,3 +28,20 @@ class AuftragsManager:
         sql=("Select *From Kunden_auftraege")
         self.cursor.execute(sql)
         return self.cursor.fetchall()
+
+    def rohmaterial_anlegen(self,material_id,material_bezeichnung,bestand,mindestbestand,typ,lagerort):
+        try:
+            sql=("Insert into Materials_lager(Material_id,Material_bezeichnung,Bestand_Aktuell,"
+                 "Mindestbestand,Typ,lagerort) values(%s,%s,%s,%s,%s,%s)")
+            values=(material_id,material_bezeichnung,bestand,mindestbestand,typ,lagerort)
+            self.cursor.execute(sql,values)
+            self.db.connection.commit()
+            return " Daten erfolgreich in die tabelle eingefügt"
+        except Exception as e:
+            self.db.connection.rollback()
+            return f"Fehler beim Einfügen der Daten: {e}"
+
+    def alle_rohmateriallen_abrufen(self):
+        sql=("Select *From Materials_lager")
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
