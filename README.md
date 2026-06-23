@@ -45,3 +45,4 @@ Hier wurde das Fundament für ein echtes **Predictive Maintenance Modul (Vorauss
 * **Data Science & ML:** Pandas, Scikit-Learn (LinearRegression)
 * **Frontend:** HTML5, CSS3 (Ergonomische, zweigeteilte Leitstands-Layouts), Jinja2 Templating
 * **Security:** Flask-WTF (CSRF-Protection), PBKDF2-Passworthashing, Session-Schranken
+* *Fotos im assest ordner
