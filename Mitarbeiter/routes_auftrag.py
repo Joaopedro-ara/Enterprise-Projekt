@@ -7,6 +7,7 @@ import random
 import pandas as pd
 import mysql.connector
 auftrag_bp=Blueprint('auftrag',__name__)
+lager_bp=Blueprint('lager',__name__)
 auf=AuftragsManager()
 
 @auftrag_bp.route('/kunden_auftraege', methods=["GET", "POST"])
@@ -40,4 +41,34 @@ def auftrag_anlegen():
             return render_template('auftraege/kunden_auftraege_uebersicht.html',meldung=ergebnis,auftraege=daten)
         except Exception as e:
             print(f" datenbank fehler {e}")
+@lager_bp.route('/rohmaterial', methods=["GET", "POST"])
+def rohmaterial():
+    # Rollen schutz
+    if 'nutzer_id' not in session:
+        return redirect(url_for('index'))
+    aktuelle_rolle = session.get("rolle")
+    produktion_rolle = ["Produktionsleiter", "Werksleiter"]
+    if aktuelle_rolle not in produktion_rolle:
+        return redirect(url_for('dashboards'))
+    if request.method=="GET":
+        if request.args.get('aktion')=='neu':
+            return render_template('auftraege/rohmaterial_anlegen.html')
+        daten = auf.alle_rohmateriallen_abrufen()
+
+        return render_template('auftraege/rohmaterial_uebersicht.html', rohmaterialien=daten)
+    if request.method=="POST":
+        try:
+            mat_id=request.form.get('material_id')
+            mat_bez=request.form.get('material_bez')
+            bestnad=request.form.get('bestand')
+            min_bestand=request.form.get('mindest_bestand')
+            typ=request.form.get('typ')
+            lagerort=request.form.get('lagerort')
+            ergebnis=auf.rohmaterial_anlegen(mat_id,mat_bez,bestnad,min_bestand,typ,lagerort)
+            daten=auf.alle_rohmateriallen_abrufen()
+            return render_template('auftraege/rohmaterial_uebersicht.html',meldung=ergebnis,rohmaterialien=daten)
+
+        except Exception as e:
+            print(f" datenbank fehler {e}")
+
 
