@@ -45,3 +45,24 @@ class AuftragsManager:
         sql=("Select *From Materials_lager")
         self.cursor.execute(sql)
         return self.cursor.fetchall()
+    #Funktion um zu speichern wie viele Ein produkt von welche menge material es braucht
+    def stuecklisten_position_anlegen(self,pordukt_id,material_id,menge):
+        try:
+            sql=("Insert Into BOM_Stueckliste(Uebergeordnet_Produkt_Id,Untergeordnet_Material_ID,Menge_benoetigt)"
+                 "values(%s,%s,%s)")
+            val=(pordukt_id,material_id,menge)
+            self.cursor.execute(sql,val)
+            self.db.connection.commit()
+            return " Daten erfolgreich in die tabelle eingefügt"
+        except Exception as e:
+            self.db.connection.rollback()
+        return f"Fehler beim Einfügen der Daten: {e}"
+    # Abrufen der informationen von der mysql tabelle
+    def stueckliste_fuer_produkt_abrufen(self,produkt_id):
+        sql= ("Select b.Uebergeordnet_Produkt_Id,m.Untergeordnet_Material_ID,b.Menge_benoetigt From BOM_Stueckliste "
+              "Join  Materials_lager m on b.Untergeordnet_Material_ID=m.Material_id Where b.Uebergeordnet_Produkt_Id= %s")
+        #Der Sql befehl wählt für ein bestimtes produkt(uebergeordnetet_produkt_id) alle in der Stückliste enthaltende Materialen
+        #sowie auch die jeweils benötigte menge aus und verküpft sie mit der Materialtabelle.
+        self.cursor.execute(sql,(produkt_id,))
+        #übergibt die Produkt_id and die Sql-Abfrage und führt sie sicher in die datenbank aus.
+        return self.cursor.fetchall()

@@ -71,4 +71,28 @@ def rohmaterial():
         except Exception as e:
             print(f" datenbank fehler {e}")
 
+@lager_bp.route('/stueckliste/neu', methods=["GET", "POST"])
+def stueckliste():
+    # Rollen schutz
+    if 'nutzer_id' not in session:
+        return redirect(url_for('index'))
+    aktuelle_rolle = session.get("rolle")
+    produktion_rolle = ["Produktionsleiter", "Werksleiter"]
+    if aktuelle_rolle not in produktion_rolle:
+        return redirect(url_for('dashboards'))
+    if request.method=="GET":
+            return render_template('auftraege/stueckliste_anlegen.html')
+    if request.method=="POST":
+        try:
+            produkt_id=request.form.get("produkt_id")
+            mat_id=request.form.get("material_id")
+            meng=request.form.get("menge")
+            ergebnis=auf.stuecklisten_position_anlegen(produkt_id,mat_id,meng)
+            daten=auf.stueckliste_fuer_produkt_abrufen(produkt_id)
+            return render_template("auftraege/stueckliste_anlegen.html",meldung=ergebnis)
+        except Exception as e:
+            print(f" datenbank fehler {e}")
+            return render_template("auftraege/stueckliste_anlegen.html", meldung=f"Kritischer Systemfehler: {e}")
+
+
 
