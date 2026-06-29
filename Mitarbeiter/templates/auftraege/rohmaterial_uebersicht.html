@@ -317,6 +317,7 @@
                 <th>Materialbezeichnung</th>
                 <th>Lagerbestand</th>
                 <th>Mindestbestand</th>
+                <th>Typ/kategorie</th>
                 <th>Lagerort</th>
                 <th>Status</th>
             </tr>
@@ -324,14 +325,15 @@
             <tbody>
             {% for material in rohmaterialien %}
             <tr>
-                <td><strong>{{ material[0] }}</strong></td>  <!-- mat_id -->
-                <td>{{ material[1] }}</td>                   <!-- mat_bez -->
-                <td>{{ material[4] }}</td>                   <!-- typ -->
-                <td>{{ material[2] }}</td>                   <!-- bestand -->
-                <td>{{ material[3] }}</td>                   <!-- mindest_bestand -->
-                <td>{{ material[5] }}</td>                   <!-- lagerort -->
+                <td>td> <strong>{{ material[1] }}</strong></td>
+                <td>{{ material[2] }}</td>
+                <td>{{ material[3] }}</td>
+                <td>{{ material[4] }}</td>
+                <td>{{ material[5] }}</td>
+                <td>{{ material[6] }}</td>
+                <td>{{ material[7] }}</td>
                 <td>
-                    {% set bestand = material[2]|int %}
+                    {% set bestand = material[3]|int %}
                     {% set min_bestand = material[3]|int %}
                     {% if bestand >= min_bestand * 1.5 %}
                         <span class="stock-badge hoch">✅ Ausreichend</span>

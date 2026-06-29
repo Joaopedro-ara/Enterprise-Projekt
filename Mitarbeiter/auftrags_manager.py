@@ -59,8 +59,8 @@ class AuftragsManager:
         return f"Fehler beim Einfügen der Daten: {e}"
     # Abrufen der informationen von der mysql tabelle
     def stueckliste_fuer_produkt_abrufen(self,produkt_id):
-        sql= ("Select b.Uebergeordnet_Produkt_Id,m.Untergeordnet_Material_ID,b.Menge_benoetigt From BOM_Stueckliste "
-              "Join  Materials_lager m on b.Untergeordnet_Material_ID=m.Material_id Where b.Uebergeordnet_Produkt_Id= %s")
+        sql= ("Select Uebergeordnet_Produkt_Id,Untergeordnet_Material_ID,Menge_benoetigt From BOM_Stueckliste "
+              "Join  Materials_lager  on Untergeordnet_Material_ID=Material_id Where Uebergeordnet_Produkt_Id= %s")
         #Der Sql befehl wählt für ein bestimtes produkt(uebergeordnetet_produkt_id) alle in der Stückliste enthaltende Materialen
         #sowie auch die jeweils benötigte menge aus und verküpft sie mit der Materialtabelle.
         self.cursor.execute(sql,(produkt_id,))
