@@ -96,3 +96,18 @@ def stueckliste():
 
 
 
+@lager_bp.route('/stueckliste/uebersicht',methods=["GET","POST"])
+def stueckliste_uebersicht():
+    # Rollen schutz
+    if 'nutzer_id' not in session:
+        return redirect(url_for('index'))
+    aktuelle_rolle = session.get("rolle")
+    produktion_rolle = ["Produktionsleiter", "Werksleiter"]
+    if aktuelle_rolle not in produktion_rolle:
+        return redirect(url_for('dashboards'))
+    if request.method=="GET":
+        return render_template('auftraege/stuecklisten_uebersicht.html')
+    if request.method=="POST":
+        such_id=request.form.get('such_produkt_id')
+        daten=auf.stueckliste_fuer_produkt_abrufen(such_id)
+        return render_template('auftraege/stuecklisten_uebersicht.html',rezept=daten,gesuchtes_produkt=such_id)

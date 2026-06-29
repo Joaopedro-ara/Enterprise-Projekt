@@ -56,7 +56,7 @@ class AuftragsManager:
             return " Daten erfolgreich in die tabelle eingefügt"
         except Exception as e:
             self.db.connection.rollback()
-        return f"Fehler beim Einfügen der Daten: {e}"
+            return f"Fehler beim Einfügen der Daten: {e}"
     # Abrufen der informationen von der mysql tabelle
     def stueckliste_fuer_produkt_abrufen(self,produkt_id):
         sql= ("Select Uebergeordnet_Produkt_Id,Untergeordnet_Material_ID,Menge_benoetigt From BOM_Stueckliste "

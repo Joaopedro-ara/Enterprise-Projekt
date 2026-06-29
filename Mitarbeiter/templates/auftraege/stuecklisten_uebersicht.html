@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gozinto-Graph & Stücklisten</title>
+    <style>
+        /* --- Modernes Reset & Hintergrund --- */
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #eef2f6; /* Etwas weicherer Hintergrund für den Fokus */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        /* --- Der Hauptcontainer (Fokus-Ansicht ohne Sidebar) --- */
+        .gozinto-container {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* --- Header Bereich --- */
+        .header {
+            background: #1f2d3d;
+            color: white;
+            padding: 25px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+        }
+        .btn-back {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .btn-back:hover { color: white; }
+
+        /* --- Content & Suchleiste --- */
+        .content {
+            padding: 40px;
+        }
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+        .search-box button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-box button:hover { background: #1d4ed8; }
+
+        /* --- Gozinto Graph Visualisierung (CSS-Baum) --- */
+        .graph-wrapper {
+            margin-top: 20px;
+        }
+        .produkt-root {
+            background: #10b981;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 18px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Die Zutat-Karten */
+        .zutaten-liste {
+            list-style: none;
+            padding-left: 30px;
+            margin: 0;
+            border-left: 3px solid #cbd5e1; /* Der "Stamm" des Graphen */
+        }
+        .zutat-node {
+            position: relative;
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        /* Der Verbindungs-Ast */
+        .zutat-node::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            width: 30px;
+            height: 3px;
+            background: #cbd5e1;
+        }
+        .zutat-id { font-weight: 600; color: #1e293b; font-size: 16px; }
+        .zutat-menge { background: #f1f5f9; color: #475569; padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 14px;}
+    </style>
+</head>
+<body>
+
+<div class="gozinto-container">
+    <div class="header">
+        <h1>🕸️ Gozinto-Graph Explorer</h1>
+        <a href="{{ url_for('lager.rohmaterial') }}" class="btn-back">⬅️ Zurück zum Lager</a>
+    </div>
+
+    <div class="content">
+        <form class="search-box" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="text" name="such_produkt_id" placeholder="Produkt-ID eingeben (z.B. P-100)..." required>
+            <button type="submit">Graph laden</button>
+        </form>
+
+        {% if rezept %}
+            <div class="graph-wrapper">
+                <div class="produkt-root">
+                    📦 Produkt: {{ gesuchtes_produkt }}
+                </div>
+
+                <ul class="zutaten-liste">
+                    {% for zutat in rezept %}
+                    <li class="zutat-node">
+                        <div class="zutat-id">
+                            <span style="font-size: 20px; margin-right: 10px;">🧩</span>
+                            Material-ID: {{ zutat[1] }}
+                        </div>
+                        <div class="zutat-menge">
+                            Menge benötigt: {{ zutat[2] }}x
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% elif gesuchtes_produkt %}
+            <div style="text-align: center; color: #dc2626; font-weight: 600; padding: 20px;">
+                Kein Rezept für "{{ gesuchtes_produkt }}" gefunden!
+            </div>
+        {% else %}
+            <div style="text-align: center; color: #64748b; margin-top: 40px;">
+                <span style="font-size: 40px; display: block; margin-bottom: 15px;">🔍</span>
+                Suche nach einer Produkt-ID, um die Stückliste zu visualisieren.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

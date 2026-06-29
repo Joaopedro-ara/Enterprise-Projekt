@@ -279,8 +279,8 @@
         <h3>📌 Weitere Module</h3>
 
         <!-- Links zu anderen Modulen -->
-        <a href="#" class="nav-btn">
-            <span class="icon">📋</span> comming soon
+        <a  href="{{ url_for('lager.stueckliste_uebersicht') }}" class="btn-primary" style="background: #10b981;">
+            <span class="icon">🕸️</span> Gozinto-Graphen anzeigen
         </a>
         <a href="#" class="nav-btn">
             <span class="icon">⚙️</span> comming soon
@@ -325,7 +325,7 @@
             <tbody>
             {% for material in rohmaterialien %}
             <tr>
-                <td>td> <strong>{{ material[1] }}</strong></td>
+                <td> <strong>{{ material[1] }}</strong></td>
                 <td>{{ material[2] }}</td>
                 <td>{{ material[3] }}</td>
                 <td>{{ material[4] }}</td>
