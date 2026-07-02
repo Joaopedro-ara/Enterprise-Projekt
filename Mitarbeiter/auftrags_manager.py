@@ -66,3 +66,46 @@ class AuftragsManager:
         self.cursor.execute(sql,(produkt_id,))
         #übergibt die Produkt_id and die Sql-Abfrage und führt sie sicher in die datenbank aus.
         return self.cursor.fetchall()
+
+    #hier wird die definition sein für das MRP-Algorithmus (Material Requirements Planning)
+    def bruttobedarf_berechnen(self,kundenauftrag_id):
+        try:
+            sql=("Select Produkt_id,MENGE from Kunden_auftraege where Kundenauftrag_id=%s ")
+            self.cursor.execute(sql,(kundenauftrag_id,))
+            auftrag=self.cursor.fetchone()
+            #prüfen ob es ein auftrag gibt
+            if auftrag is None:
+                return "Kein Auftrag gefunden"
+            produkt_id=auftrag[0]
+            menge=auftrag[1]
+            #Stueckliste_laden
+            stuekliste=self.stueckliste_fuer_produkt_abrufen(produkt_id)
+            #leres dict erstellen:
+            gesamter_bedarf={}
+            #for schleife die das rezept holt
+            for eintrag in stuekliste:
+                # # Material-ID und benötigte Menge aus dem aktuellen Stücklisteneintrag auslese
+                zutat_id=eintrag[1] #Matreial:id aus der Stücliste= Untergeordnet_Material_ID
+                rezept_menge=eintrag[2] # benötigte menge aus den  Menge_benoetigt
+                gesamt_benoetigt=rezept_menge*menge # wie viel matrial ein produkt benötigt * menge den der kunde bestellt hat
+                gesamter_bedarf[zutat_id]=gesamt_benoetigt
+            return gesamter_bedarf
+
+        except Exception as e:
+            self.db.connection.rollback()
+            return f"Fehler beim Einfügen der Daten: {e}"
+
+    #verfübarprüfen
+    def verfuegbarkeit_pruefen(self,kundenauftrag_id):
+        # Schritt 1: Bruttobedarf berechnen
+        bedarf_dict=self.bruttobedarf_berechnen(kundenauftrag_id)
+        # Prüfen, ob beim Berechnen des Bruttobedarfs ein Fehler aufgetreten ist
+        if isinstance(bedarf_dict,str):# mit isinstnca prüfen ob die variable zu ein String gehört.
+            return bedarf_dict
+        pruef_bericht=[] # gibt später an das frontent weiter die werte
+        for material_id,benoetigte_menge in bedarf_dict.items():
+            sql=("Select Material_bezeichnung,Bestand_Aktuell From Materials_lager where Material_id=%s")
+
+
+
+
