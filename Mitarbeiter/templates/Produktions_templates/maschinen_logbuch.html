@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Lager - Hilde AG{% endblock %}
+
+{% block styles %}
+    .container { display: flex; width: 100%; min-height: 75vh; background: #1f2d3d; color: white; gap: 20px; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+    .sidebar { width: 250px; background: #243447; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+    .sidebar a { background: aliceblue; color: #1f2d3d; padding: 12px 15px; text-decoration: none; font-weight: 500; transition: background 0.2s; border-radius: 4px; text-align: center; }
+    .sidebar a:hover { background: #32465a; color: white; }
+    .content-area { flex: 1; background: aliceblue; color: #243447; padding: 30px; overflow-y: auto; border-top-right-radius: 8px; border-bottom-right-radius: 8px;}
+    h1 { font-size: 24px; margin-bottom: 20px; color: #1f2d3d; border-bottom: 2px solid #1f2d3d; padding-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 6px; overflow: hidden; }
+    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ccc; }
+    th { background: #1f2d3d; color: white; }
+{% endblock %}
+{% block content %}
+<style>
+    .chart-container {
+        max-height: 420px;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        background-color: #ffffff;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="container">
+    <div class =sidebar>
+        <a href="#">Fehler-Logbuch anzeigen</a>
+        <a href="{{url_for('produktion.maschinen_logbuch_export')}}"> 📥Excel-Export herunterladen</a>
+        <a href="{{ url_for('produktion.prod_dash') }}">Zurück zum Dashboard</a>
+
+    </div>
+
+
+<div class="content-area">
+    <h1> Fehler Meldungen</h1>
+    <div class="chart-container" style="max-width: 800px; margin: 25px 0;">
+    <canvas id="ausfallChart"></canvas>
+</div>
+    <table>
+        <thead>
+        <tr>
+            <th>Log-ID</th>
+            <th>Maschinen-ID</th>
+            <th>Fehler_code</th>
+            <th>Info_fehler</th>
+            <th>Datum</th>
+            <th>Dauer</th>
+            <th>Status</th>
+            <th>Mitarbeiter</th>
+            <th>Priorität</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for zeile in logs %}
+        <tr>
+
+                    <td>{{ zeile[0] }}</td>
+                    <td>{{ zeile[1] }}</td>
+                    <td>{{ zeile[2] }}</td>
+                    <td>{{ zeile[3] }}</td>
+                    <td>{{ zeile[4] }}</td>
+                    <td>{{ zeile[5] }}</td>
+                    <td>{{ zeile[6] }}</td>
+                    <td>{{ zeile[7] }}</td>
+                    <td>{{ zeile[8] }}</td>
+
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <script>
+        fetch('/api/maschinen_logbuch/chart_daten').then(response=>response.json())
+            .then(daten=> {
+                const ctx = document.getElementById('ausfallChart');
+                new Chart(ctx, {
+                    type: 'bar', data: {
+                        labels: daten.Maschinen_id, datasets: [{label: "Anzahl Ausfälle", data: daten.Ausfall}]
+                    },
+                    options:{
+                    scales:{
+                        y:{
+                             beginAtZero: true
+                        }
+                    }
+                }
+                });
+
+            });
+
+
+
+    </script>
+    </div>
+{% endblock %}
