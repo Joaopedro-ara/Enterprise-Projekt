@@ -296,6 +296,48 @@
             System-Info: {{ meldung }}
         </div>
     {% endif %}
+        {% if mrp_bericht %}
+         <h3>🔍 MRP-Prüfung für Auftrag {{ gepruefter_auftrag }}</h3>
+        {%if mrp_bericht is string %}
+        <div style="background:#fee2e2;
+                    color:#991b1b;
+                    padding:15px;
+                    border-radius:8px;
+                    margin-bottom:20px;">
+            {{ mrp_bericht }}
+        </div>
+        {% else %}
+
+        <table class="erp-table" style="margin-bottom:25px;">
+            <thead>
+                <tr>
+                    <th>Material-ID</th>
+                    <th>Bezeichnung</th>
+                    <th>Bedarf</th>
+                    <th>Lagerbestand</th>
+                    <th>Fehlmenge</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for zeile in mrp_bericht %}
+                <tr>
+                    <td>{{ zeile["Material-ID"] }}</td>
+                    <td>{{ zeile["Bezeichnung"] }}</td>
+                    <td>{{ zeile["Bedarf"] }}</td>
+                    <td>{{ zeile["Lagerbestand"] }}</td>
+                    <td>{{ zeile["Fehlmenge"] }}</td>
+                    <td>{{ zeile["Status"] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+        {% endif %}
+
+
+
 
         <table class="erp-table">
             <thead>
@@ -309,6 +351,7 @@
                 <th>Status</th>
                 <th>Werk-ID</th>
                 <th>Datum</th>
+                <th>Aktion</th>
             </tr>
             </thead>
             <tbody>
@@ -340,6 +383,12 @@
                 </td>
                 <td>{{ auftrag[8] }}</td>
                 <td>{{ auftrag[9] }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('auftrag.mrp_pruefung') }}">
+                        <input type="hidden" name="auftrags_id" value="{{ auftrag[1] }}">
+                        <button type="submit">🔍 Prüfen</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
             </tbody>

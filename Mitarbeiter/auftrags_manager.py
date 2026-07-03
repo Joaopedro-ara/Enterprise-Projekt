@@ -97,14 +97,45 @@ class AuftragsManager:
 
     #verfübarprüfen
     def verfuegbarkeit_pruefen(self,kundenauftrag_id):
-        # Schritt 1: Bruttobedarf berechnen
-        bedarf_dict=self.bruttobedarf_berechnen(kundenauftrag_id)
-        # Prüfen, ob beim Berechnen des Bruttobedarfs ein Fehler aufgetreten ist
-        if isinstance(bedarf_dict,str):# mit isinstnca prüfen ob die variable zu ein String gehört.
-            return bedarf_dict
-        pruef_bericht=[] # gibt später an das frontent weiter die werte
-        for material_id,benoetigte_menge in bedarf_dict.items():
-            sql=("Select Material_bezeichnung,Bestand_Aktuell From Materials_lager where Material_id=%s")
+        try:
+            # Schritt 1: Bruttobedarf berechnen
+            bedarf_dict = self.bruttobedarf_berechnen(kundenauftrag_id)
+            # Prüfen, ob beim Berechnen des Bruttobedarfs ein Fehler aufgetreten ist
+            if isinstance(bedarf_dict, str):  # mit isinstnca prüfen ob die variable zu ein String gehört.
+                return bedarf_dict
+            pruef_bericht = []  # gibt später an das frontent weiter die werte
+            for material_id, benoetigte_menge in bedarf_dict.items():
+                sql = ("Select Material_bezeichnung,Bestand_Aktuell From Materials_lager where Material_id=%s")
+                self.cursor.execute(sql, (material_id,))
+                ergebnis = self.cursor.fetchone()
+                bezeichnung = ergebnis[0]
+                aktueller_bestand = ergebnis[1]
+                # Algorithmus  logik die Diferenz  zuzschen aktuelne_bestand und benötigte menge
+                differenz = aktueller_bestand - benoetigte_menge
+                if differenz < 0:
+                    status = "Kritsich 🔴"
+                    fehlmenge = abs(differenz)
+                if differenz >= 0:
+                    status = "Ausreichend ✅"
+                    fehlmenge =0
+
+                # Dictonary um den bericht zuschreiben
+                material_bericht = {
+                    "Material-ID": material_id,
+                    "Bezeichnung": bezeichnung,
+                    "Bedarf": benoetigte_menge,
+                    "Lagerbestand": aktueller_bestand,
+                    "Fehlmenge": fehlmenge,
+                    "Status": status,
+                }
+                pruef_bericht.append(material_bericht)
+            return pruef_bericht
+
+        except Exception as e:
+            self.db.connection.rollback()
+            return f"Fehler beim Einfügen der Daten: {e}"
+
+
 
 
 

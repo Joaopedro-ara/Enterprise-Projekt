@@ -111,3 +111,11 @@ def stueckliste_uebersicht():
         such_id=request.form.get('such_produkt_id')
         daten=auf.stueckliste_fuer_produkt_abrufen(such_id)
         return render_template('auftraege/stuecklisten_uebersicht.html',rezept=daten,gesuchtes_produkt=such_id)
+
+@auftrag_bp.route('/auftrag/mrp_pruefung', methods=["POST"])
+def mrp_pruefung():
+    auftrags_id=request.form.get('auftrags_id')
+    bericht=auf.verfuegbarkeit_pruefen(auftrags_id)
+    daten=auf.alles_auftraege_anzeigen()
+    return render_template('auftraege/kunden_auftraege_uebersicht.html', auftraege=daten, mrp_bericht=bericht, gepruefter_auftrag=auftrags_id)
+
