@@ -95,18 +95,18 @@ class TestRoutesAuftrag(unittest.TestCase):
         #prüfen, ob die übersicht angezeigt wird
         self.assertIn("Kundenaufträge Übersicht",response.get_data(as_text=True))
 
-    def test_kunden_aftrag_post_nicht_erfolgreich(self):
-        def test_kunden_auftrag_post_datenbankfehler(self):
+
+    def test_kunden_auftrag_post_datenbankfehler(self):
             # Fake-Session
-            with self.client.session_transaction() as sess:
+        with self.client.session_transaction() as sess:
                 sess['nutzer_id'] = '123'
                 sess['rolle'] = 'Werksleiter'
 
             # Manager soll eine Exception werfen
-            self.mock_manager.kundenauftrag_anlegen.side_effect = Exception("DB Fehler")
+        self.mock_manager.kundenauftrag_anlegen.side_effect = Exception("DB Fehler")
 
             # POST-Anfrage
-            response = self.client.post("/kunden_auftraege", data={
+        response = self.client.post("/kunden_auftraege", data={
                 "kundenauftrag_id": "KA-001",
                 "kunde_name": "BM",
                 "produkt_id": "P-001",
@@ -119,10 +119,10 @@ class TestRoutesAuftrag(unittest.TestCase):
             })
 
             # Prüfen, dass der Manager aufgerufen wurde
-            self.mock_manager.kundenauftrag_anlegen.assert_called_once()
+        self.mock_manager.kundenauftrag_anlegen.assert_called_once()
 
             # ein 500-Fehler
-            self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.status_code, 500)
 
     #testfall für  rohmaterial ohne login
     def test_rohmaterial_ansicht_ohne_login(self):
@@ -163,16 +163,116 @@ class TestRoutesAuftrag(unittest.TestCase):
         self.assertIn("Rohmaterial anlegen", response.get_data(as_text=True))
 
     #testfall Rohmaterial anlgegen post erfolgreich
-    def test_rohmaterial_anlegen_erfolgreich(self):
+    def test_rohmaterial_anlegen_post_erfolgreich(self):
         with self.client.session_transaction() as sess:
             sess['nutzer_id'] = '123'
             sess['rolle'] = 'Werksleiter'
             # Rückgabewerte des manages festlegen:
-            self.mock_manager.kundenauftrag_anlegen.return_value = ("Daten erfolgreich in die Tabelle eingefügt")
-            self.mock_manager.alles_auftraege_anzeigen.return_value = []
+        self.mock_manager.rohmaterial_anlegen.return_value = ("Daten erfolgreich in die Tabelle eingefügt")
+        response=self.client.post("/rohmaterial",data={
+                "material_id":"KB-001",
+                "material_bez":"Stahltraeger 50 mm",
+                "bestand":"50",
+                "mindest_bestand":"30",
+                "typ": "Stueck",
+                "lagerort":"Bremen"
+            })
+        self.assertEqual(response.status_code, 200)
+        self.mock_manager.rohmaterial_anlegen.assert_called_once_with("KB-001","Stahltraeger 50 mm","50",
+                                                                 "30","Stueck","Bremen")
+        self.mock_manager.rohmaterial_anlegen.assert_called_once()
+        # prüfen, ob die übersicht angezeigt wird
+        self.assertIn("Rohmaterial Übersicht", response.get_data(as_text=True))
+    def test_rohmaterial_anlegen_post_Datenbank_fehler(self):
+        with self.client.session_transaction() as sess:
+            sess['nutzer_id'] = '123'
+            sess['rolle'] = 'Werksleiter'
+
+            # Manager soll eine Exception werfen
+        self.mock_manager.rohmaterial_anlegen.side_effect = Exception("DB Fehler")
+
+        # POST-Anfrage
+        response = self.client.post("/rohmaterial", data={
+            "material_id": "KB-001",
+            "material_bez": "Stahltraeger 50 mm",
+            "bestand": "50",
+            "mindest_bestand": "30",
+            "typ": "Stueck",
+            "lagerort": "Bremen"
+        })
+
+        # Prüfen, dass der Manager aufgerufen wurde
+        self.mock_manager.rohmaterial_anlegen.assert_called_once()
+
+        # ein 500-Fehler
+        self.assertEqual(response.status_code, 500)
+#Stueckliste
+    def test_stueckliste_ohne_login(self):
+        response = self.client.get("/stueckliste/neu")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/', response.headers['Location'])
+
+    def test_stuecklsiet_mit_falschen_rolle(self):
+        # fake seesion vortäuschen falsche rolle
+        with self.client.session_transaction() as sess:
+            sess['nutzer_id'] = '123'
+            sess['rolle'] = 'Porduktionsarbeiter'  # falsche rolle für die route
+        response = self.client.get('/stueckliste/neu')
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/dashboard', response.headers['Location'])
+
+    def test_stueckliste_mit_richtige_rolle_erfolgreich(self):
+        # fake seesion vortäuschen richtiger rolle
+        with self.client.session_transaction() as sess:
+            sess['nutzer_id'] = '123'
+            sess['rolle'] = 'Werksleiter'
+        # Mock-manger sagen was er bei alle_materialen-aufrufen zurückgeben soll
+        self.mock_manager.stuecklisten_position_anlegen.return_value = [("RM-01", "KB-011", 100)]
+        response = self.client.get('/stueckliste/neu')
+        self.assertEqual(response.status_code, 200)  # ok muss sein das die Anfrtage erfolgreich ist
+        self.assertIn('Stueckliste anlegen', response.get_data(as_text=True))
+
+    def test_stueckliste_anlegen_post_erfolgreich(self):
+        with self.client.session_transaction() as sess:
+            sess['nutzer_id'] = '123'
+            sess['rolle'] = 'Werksleiter'
+            # Rückgabewerte des manages festlegen:
+        self.mock_manager.rohmaterial_anlegen.return_value = ("Daten erfolgreich in die Tabelle eingefügt")
+        response = self.client.post("/stueckliste/neu",data={
+            "produkt_id":"DB-002",
+            "material_id":"KD-009",
+            "menge":"10"
+        })
+        self.assertEqual(response.status_code, 200)
+        self.mock_manager.stuecklisten_position_anlegen.assert_called_once_with("DB-002", "KD-009", "10")
+        self.mock_manager.stuecklisten_position_anlegen.assert_called_once()
+        # prüfen, ob die übersicht angezeigt wird
+        self.assertIn("Stueckliste anlegen", response.get_data(as_text=True))
+
+    def test_stueckliste_anlegen_post_db_fehler(self):
+        with self.client.session_transaction() as sess:
+            sess['nutzer_id'] = '123'
+            sess['rolle'] = 'Werksleiter'
+            # Manager soll eine Exception werfen
+        self.mock_manager.stuecklisten_position_anlegen.side_effect = Exception("DB Fehler")
+        response = self.client.post("/stueckliste/neu", data={
+            "produkt_id": "DB-002",
+            "material_id": "KD-009",
+            "menge": "10"
+        })
+        self.mock_manager.stuecklisten_position_anlegen.assert_called_once()
+
+        # ein 500-Fehler
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Kritischer Systemfehler",response.get_data(as_text=True))
 
 
-        #b für bytes
+
+
+
+
+
+
     #testfall 3  post method
     def test_mrp_pruefung_post(self):
         #fake session erstellen:

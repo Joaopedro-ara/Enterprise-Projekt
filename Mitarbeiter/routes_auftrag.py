@@ -41,6 +41,7 @@ def auftrag_anlegen():
             return render_template('auftraege/kunden_auftraege_uebersicht.html',meldung=ergebnis,auftraege=daten)
         except Exception as e:
             print(f" datenbank fehler {e}")
+            return "Interner Serverfehler", 500
 @lager_bp.route('/rohmaterial', methods=["GET", "POST"])
 def rohmaterial():
     # Rollen schutz
@@ -70,6 +71,7 @@ def rohmaterial():
 
         except Exception as e:
             print(f" datenbank fehler {e}")
+            return "Interner Serverfehler", 500
 
 @lager_bp.route('/stueckliste/neu', methods=["GET", "POST"])
 def stueckliste():
@@ -93,6 +95,7 @@ def stueckliste():
         except Exception as e:
             print(f" datenbank fehler {e}")
             return render_template("auftraege/stueckliste_anlegen.html", meldung=f"Kritischer Systemfehler: {e}")
+
 
 
 
