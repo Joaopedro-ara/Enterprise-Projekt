@@ -266,8 +266,10 @@ class TestRoutesAuftrag(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Kritischer Systemfehler",response.get_data(as_text=True))
 
-
-
+    def test_stueckliste_uebersicht_ohne_login(self):
+        response = self.client.get("/stueckliste/uebersicht")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/', response.headers['Location'])
 
 
 
