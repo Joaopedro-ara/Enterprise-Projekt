@@ -118,6 +118,8 @@ def stueckliste_uebersicht():
 @auftrag_bp.route('/auftrag/mrp_pruefung', methods=["POST"])
 def mrp_pruefung():
     auftrags_id=request.form.get('auftrags_id')
+    if not  auftrags_id:#
+        return "Auftrags-ID fehlt", 400
     bericht=auf.verfuegbarkeit_pruefen(auftrags_id)
     daten=auf.alles_auftraege_anzeigen()
     return render_template('auftraege/kunden_auftraege_uebersicht.html', auftraege=daten, mrp_bericht=bericht, gepruefter_auftrag=auftrags_id)

@@ -271,7 +271,36 @@ class TestRoutesAuftrag(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn('/', response.headers['Location'])
 
+    def test_stueckliste_uebersicht_falsche_rolle(self):
+        with self.client.session_transaction() as sess:
+            sess['nutzer_id'] = '123'
+            sess['rolle'] = 'Porduktionsarbeiter'  # falsche rolle für die route
+        response = self.client.get('/stueckliste/uebersicht')
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/dashboard', response.headers['Location'])
 
+    def test_stueckliste_uebersicht_get_richtige_rolle(self):
+        # fake seesion vortäuschen richtiger rolle
+        with self.client.session_transaction() as sess:
+            sess['nutzer_id'] = '123'
+            sess['rolle'] = 'Werksleiter'
+        # Mock-manger sagen was er bei alle_materialen-aufrufen zurückgeben soll
+        response = self.client.get('/stueckliste/uebersicht')
+        self.assertEqual(response.status_code, 200)  # ok muss sein das die Anfrtage erfolgreich ist
+        self.assertIn('Gozinto-Graph & Stücklisten', response.get_data(as_text=True))
+    def test_stueckliste_uebersicht_post_richtige_rolle(self):
+        # fake seesion vortäuschen richtiger rolle
+        with self.client.session_transaction() as sess:
+            sess['nutzer_id'] = '123'
+            sess['rolle'] = 'Werksleiter'
+        self.mock_manager.stueckliste_fuer_produkt_abrufen.return_value = ("RM-01", "KB-011", 100)
+        response = self.client.post("/stueckliste/uebersicht", data={
+                "such_produkt_id":"DB-002"
+            })
+        self.assertEqual(response.status_code, 200)
+        self.mock_manager.stueckliste_fuer_produkt_abrufen.assert_called_once_with("DB-002")
+            # prüfen, ob die übersicht angezeigt wird
+        self.assertIn("Gozinto-Graph & Stücklisten", response.get_data(as_text=True))
 
 
 
@@ -286,6 +315,20 @@ class TestRoutesAuftrag(unittest.TestCase):
         response = self.client.post('/auftrag/mrp_pruefung', data={'auftrags_id': 'KA-001'})
         self.assertEqual(response.status_code, 200)
         self.mock_manager.verfuegbarkeit_pruefen.assert_called_once_with('KA-001')
+
+    def test_mrp_prufung_ohne_auftrgs_id(self):
+        with self.client.session_transaction() as sess:
+            sess['nutzer_id'] = '123'
+            sess['rolle'] = 'Werksleiter'
+        self.mock_manager.verfuegbarkeit_pruefen.return_value=[]
+        self.mock_manager.alles_auftraege_anzeigen.return_value = []
+        response = self.client.post('/auftrag/mrp_pruefung', data={})
+        self.assertEqual(response.status_code, 400)
+        self.mock_manager.verfuegbarkeit_pruefen.assert_not_called()
+        self.mock_manager.alles_auftraege_anzeigen.assert_not_called()
+
+
+
 
 
 
