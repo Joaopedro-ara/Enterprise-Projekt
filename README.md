@@ -1,48 +1,63 @@
-# G-INOS – Global Integrated Neural Operating System 
-
-G-INOS ist ein hochmodernes, modulares Enterprise Resource Planning (ERP) System und Produktionsplanungs- und -steuerungssystem (PPS), entwickelt auf Basis von **Python**, **Flask** und **MySQL**. Das System ist speziell für die verarbeitende Industrie (Hilde AG) konzipiert und implementiert eine strikte rollenbasierte Zugriffskontrolle (RBAC) für maximale Betriebssicherheit.
 
 ---
 
-##  Aktueller Entwicklungsstand & Features
+# 🏭 G-INOS – Global Integrated Neural Operating System
 
-Das System befindet sich in der aktiven Entwicklung und deckt bereits die zentralen operativen Säulen eines modernen Industriebetriebs ab:
+> **🌐 Language Notice:**
+> While this README is provided in English for a broader overview, please note that the underlying project source code, database architecture (e.g., tables like `Materials_lager` or `prod_Maschinen`), business logic, and frontend HTML user interfaces are developed entirely in **German**.
 
-### 1.  Personal- & Sicherheitsmanagement (`Employers`)
-* Sichere Benutzerregistrierung und verschlüsseltes Login-Verfahren.
-* Rollenbasierter Zugriffsschutz (Werksleiter, Produktionsleiter, Produktionsschichtleiter, Produktionsarbeiter).
+G-INOS is a state-of-the-art, modular Enterprise Resource Planning (ERP) and Production Planning and Control (PPS) system. Built with **Python**, **Flask**, and **MySQL**, the system is specifically designed for the manufacturing industry (Hilde AG). It implements strict Role-Based Access Control (RBAC) to ensure maximum operational security and data integrity.
 
-### 2.  Lager- & Bestandsmanagement (`Materials_lager` / `Lagerbestand`)
-* Echtzeit-Verwaltung von Materialbeständen und Lagerorten.
-* Automatisches Warnsystem bei Unterschreitung von Mindestbeständen.
-* Finanzielle Bewertung von Lagerbeständen (Gesamtwert und pro Standort).
-* Integrierter Excel-Export für administrative Audits.
-
-### 3. ⚙️ Produktions- & Instandhaltungsmanagement (`prod_Maschinen` & Logbuch)
-* Live-Überwachung des Maschinenstatus und zentrale Erfassung von Maschinenausfällen.
-* **Intelligente Instandhaltungs-Simulation:** Dynamische Berechnung realistischer Reparaturzeiten gekoppelt an die Fehler-Priorität im System zur automatischen Generierung historischer Trainingsdaten.
-
-### 4.  Kundenauftrags-Zentrale (`Kunden_auftraege`)
-* Operative Neuanlage und strategische Steuerung von Kundenaufträgen.
-* Automatisierte Zuweisung von Werk-IDs basierend auf der aktiven Benutzersitzung zur Verhinderung werksübergreifender Fehlbuchungen.
+*(Note: Screenshots of the user interface can be found in the `/assets` directory.)*
 
 ---
 
-##  Feature-Teaser: Branch `Aufträge_prediction_manager`
+## 🚀 Current Development Status & Core Features
 
-Im aktuellen Entwicklungs-Branch **`Aufträge_prediction_manager`** treiben wir die digitale Transformation von G-INOS zur Industrie 4.0 voran. 
+The system is under active development and already covers the central operational pillars of a modern industrial plant:
 
-Hier wurde das Fundament für ein echtes **Predictive Maintenance Modul (Vorausschauende Instandhaltung)** gelegt:
-* **Echtes Machine Learning im ERP:** Integration eines datenwissenschaftlichen Modells basierend auf **Pandas** und **Scikit-Learn**.
-* **Lineare Regression (Linear Regression Modell):** Das System analysiert historische Logbucheinträge und lernt die mathematische Korrelation zwischen Fehler-Prioritäten und tatsächlichen Ausfallzeiten.
-* **Prognose-Engine:** Das trainierte Modell berechnet für das Management vollautomatisch eine präzise Schätzung der voraussichtlichen Reparaturdauer zukünftiger Maschinenausfälle, um Stillstandszeiten in der Fabrik drastisch zu minimieren.
+### 1. 👥 Human Resources & Security Management (`Employers`)
+
+* Secure user registration and encrypted login processes.
+* Granular Role-Based Access Control (RBAC: Plant Manager, Production Manager, Shift Supervisor, Production Worker).
+
+### 2. 📦 Inventory & Warehouse Management (`Materials_lager` / `Lagerbestand`)
+
+* Real-time management of material inventory and warehouse locations.
+* Automated warning system for low stock levels.
+* Dynamic financial valuation of inventory (total value and broken down by location).
+* Integrated Excel export functionality for administrative audits and reporting.
+
+### 3. ⚙️ Production & Maintenance Management (`prod_Maschinen` & `Logbuch`)
+
+* Live monitoring of machine status and centralized logging of machine failures.
+* **Intelligent Maintenance Simulation:** Dynamic calculation of realistic repair times linked to system-defined failure priorities, automatically generating historical training data.
+
+### 4. 📋 Customer Order Control Center (`Kunden_auftraege`)
+
+* Operational creation and strategic management of customer orders.
+* Automated assignment of Plant IDs based on the active user session to prevent cross-plant booking errors.
 
 ---
 
-##  Tech-Stack
+## 🤖 Feature Teaser: Branch `Aufträge_prediction_manager`
 
-* **Backend:** Python 3.x, Flask (Blueprints), MySQL Connector
-* **Data Science & ML:** Pandas, Scikit-Learn (LinearRegression)
-* **Frontend:** HTML5, CSS3 (Ergonomische, zweigeteilte Leitstands-Layouts), Jinja2 Templating
-* **Security:** Flask-WTF (CSRF-Protection), PBKDF2-Passworthashing, Session-Schranken
-* *Fotos im assest ordner
+In the current development branch **`Aufträge_prediction_manager`**, we are driving the digital transformation of G-INOS toward Industry 4.0.
+
+This branch lays the foundation for a true **Predictive Maintenance Module**:
+
+* **Machine Learning in ERP:** Integration of a data science model utilizing **Pandas** and **Scikit-Learn**.
+* **Linear Regression:** The system analyzes historical logbook entries and learns the mathematical correlation between failure priorities and actual downtime.
+* **AI-Powered Forecasting Engine:** The trained model automatically calculates a precise estimate of the expected repair duration for future machine failures. This provides management with valuable decision-making data to drastically minimize factory downtime.
+
+---
+
+## 💻 Technology Stack
+
+| Domain | Technologies |
+| --- | --- |
+| **Backend** | Python 3.x, Flask (Blueprints), MySQL Connector |
+| **Database** | MySQL |
+| **Frontend** | HTML5, CSS3 (Ergonomic, dual-pane control center layouts), Jinja2 Templating |
+| **Data Science & ML** | Pandas, Scikit-Learn (Linear Regression) |
+| **Security** | Flask-WTF (CSRF-Protection), PBKDF2 Password Hashing, Secure Session Management |
